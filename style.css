@@ -12,6 +12,7 @@
 #container {
   display: flex;
   height: 100vh;
+  position: relative; /* Add position: relative to the container */
 }
 
 #sidebar {
@@ -44,6 +45,7 @@
   width: 75%;
   display: flex;
   flex-direction: column;
+  position: relative; /* Add position: relative to the editor */
 }
 
 #topbar {
@@ -87,6 +89,9 @@
   color: white;
   overflow-y: auto;
   padding: 10px;
+  position: absolute;
+  bottom: 40px; /* Adjusted bottom value for statusbar */
+  width: 100%; /* Take up the full width */
 }
 
 #output h2 {
@@ -104,6 +109,9 @@
   display: flex;
   align-items: center;
   padding: 10px;
+  position: absolute;
+  bottom: 0; /* Stick to the bottom */
+  width: 100%; /* Take up the full width */
 }
 
 #status {
