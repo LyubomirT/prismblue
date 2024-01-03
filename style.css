@@ -1,5 +1,7 @@
 /* Nunito Font */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+/* Some monospace font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap');
 
 /* This is the style.css file for the renderer process */
 * {
@@ -80,7 +82,6 @@
 #code-area {
   flex: 1;
   resize: none;
-  font-family: monospace;
   font-size: 16px;
   height: 100%; /* Fill up the whole available height */
 }
@@ -123,4 +124,8 @@
   font-size: 16px;
 }
 
-.CodeMirror { z-index: 0; }
+.CodeMirror,
+.CodeMirror pre,
+.CodeMirror-scroll {
+  font-family: 'Roboto Mono', monospace !important; /* Use the monospace font for CodeMirror */
+}

@@ -15,7 +15,7 @@ const status = document.getElementById('status')
 // Initialize the CodeMirror editor
 const editor = CodeMirror.fromTextArea(codeArea, {
   lineNumbers: true,
-  theme: 'monokai'
+  theme: 'monokai-dark',
 })
 
 editor.setSize('100%', '100%')
