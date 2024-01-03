@@ -11,11 +11,11 @@ body {
     background-color: #282c34;
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    height: 50px; /* Adjust top bar height */
   }
   
-  .logo img {
-    height: 32px; /* Adjust logo size as needed */
+  .logo {
+    height: 64px; /* Adjust logo size as needed */
     margin-right: 10px;
   }
   
@@ -52,7 +52,7 @@ body {
   
   .bottom-bar {
     background-color: #282c34;
-    height: 40px; /* Adjust bottom bar height */
+    height: 30px; /* Adjust bottom bar height */
     position: fixed;
     bottom: 0;
     width: 100%;
