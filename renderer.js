@@ -18,6 +18,8 @@ const editor = CodeMirror.fromTextArea(codeArea, {
   theme: 'monokai'
 })
 
+editor.setSize('100%', '100%')
+
 // Set the initial values
 let projectPath = null
 let currentFile = null
@@ -158,3 +160,4 @@ outputData.textContent = ''
 // Send the run-python event to the main process
 ipcRenderer.send('run-python', currentFile)
 })
+
