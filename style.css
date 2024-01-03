@@ -1,6 +1,10 @@
+/* Nunito Font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
 /* This is the style.css file for the renderer process */
 * {
   box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
   margin: 0;
   padding: 0;
 }
