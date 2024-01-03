@@ -1,26 +1,37 @@
+<!-- This is the index.html file for the renderer process -->
 <!DOCTYPE html>
 <html>
 <head>
- <title>Prismblue - Code Your Way to Brilliance</title>
- <link rel="stylesheet" href="styles.css"> <link rel="icon" href="brand/PrismBlue Code NOBG.png"> </head>
+  <meta charset="UTF-8">
+  <title>Simple Code Editor</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
+</head>
 <body>
- <div class="top-bar">
-    <img src="brand/PrismBlue Code NOBG.png" alt="Prismblue Logo" class="logo">
-   </div>
-
- <div class="sidebar">
-   </div>
-
- <div class="middle-area">
-   <div class="welcome-content">
-     <h1>Welcome to Prismblue</h1>
-     <p>Your code awaits, ready to be turned into something amazing.</p>
-     <button class="create-file-btn">Create a New File</button>
-     <button class="open-file-btn">Open an Existing Project</button>
-   </div>
- </div>
-
- <div class="bottom-bar">
-   </div>
+  <div id="container">
+    <div id="sidebar">
+      <h1 id="project-name">No Project Selected</h1>
+      <ul id="file-list"></ul>
+    </div>
+    <div id="editor">
+      <div id="topbar">
+        <span id="file-name">Untitled</span>
+        <button id="run-button" disabled><i class="fas fa-play"></i> Run</button>
+      </div>
+      <textarea id="code-area"></textarea>
+      <div id="output">
+        <h2>Output</h2>
+        <pre id="output-data"></pre>
+      </div>
+      <div id="statusbar">
+        <span id="status">Ready</span>
+      </div>
+    </div>
+  </div>
+  <script src="renderer.js"></script>
 </body>
 </html>

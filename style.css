@@ -1,0 +1,108 @@
+/* This is the style.css file for the renderer process */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  display: flex;
+  height: 100vh;
+}
+
+#sidebar {
+  width: 25%;
+  background-color: #333;
+  color: white;
+  overflow-y: auto;
+}
+
+#project-name {
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#file-list {
+  list-style: none;
+}
+
+#file-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#file-list li:hover {
+  background-color: #555;
+}
+
+#editor {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+}
+
+#topbar {
+  height: 40px;
+  background-color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+#file-name {
+  color: white;
+  font-size: 18px;
+}
+
+#run-button {
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+#run-button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+#code-area {
+  flex: 1;
+  resize: none;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+#output {
+  height: 200px;
+  background-color: #111;
+  color: white;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+#output h2 {
+  font-size: 18px;
+}
+
+#output-data {
+  font-family: monospace;
+  font-size: 16px;
+}
+
+#statusbar {
+  height: 40px;
+  background-color: #222;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+#status {
+  color: white;
+  font-size: 16px;
+}
