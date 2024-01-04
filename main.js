@@ -126,6 +126,12 @@ function runPython (file) {
     // Send the exit code to the renderer process
     mainWindow.webContents.send('output-data', `Process exited with code ${code}`)
   })
+
+  // Listen for the input-data event from the renderer process
+  ipcMain.on('input-data', (event, input) => {
+    // Write the input value to the child process stdin
+    pyProcess.stdin.write(input + '\n')
+  })
 }
 
 // Listen for the ready event
@@ -152,3 +158,4 @@ app.on('activate', function () {
 ipcMain.on('run-python', (event, file) => {
   runPython(file)
 })
+

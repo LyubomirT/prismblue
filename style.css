@@ -129,3 +129,17 @@
 .CodeMirror-scroll {
   font-family: 'Roboto Mono', monospace !important; /* Use the monospace font for CodeMirror */
 }
+
+/* Below output, a sibling of #output */
+#input {
+  height: 40px;
+  background-color: #222;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position: absolute;
+  bottom: 240px; /* Adjusted bottom value for statusbar and output */
+  width: 100%; /* Take up the full width */
+  z-index: 3;
+}

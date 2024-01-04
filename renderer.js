@@ -161,3 +161,20 @@ outputData.textContent = ''
 ipcRenderer.send('run-python', currentFile)
 })
 
+// Get the input element
+const inputField = document.getElementById('input-field')
+
+// Listen for the keydown event
+inputField.addEventListener('keydown', (event) => {
+  // Check if the enter key was pressed
+  if (event.keyCode === 13) {
+    // Get the input value
+    const input = inputField.value
+    // Send the input value to the main process
+    ipcRenderer.send('input-data', input)
+    // Clear the input field
+    inputField.value = ''
+  }
+})
+
+
