@@ -6,7 +6,6 @@
   "scripts": {
     "start": "electron ."
   },
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LyubomirT/prismblue-code.git"
@@ -18,6 +17,7 @@
   },
   "homepage": "https://github.com/LyubomirT/prismblue-code#readme",
   "dependencies": {
+    "codemirror": "^6.0.1",
     "electron": "^28.1.0"
   }
 }

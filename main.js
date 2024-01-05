@@ -1,161 +1,107 @@
-// This is the main process file for electron
-const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
-const path = require('path')
-const fs = require('fs')
-const { spawn } = require('child_process')
+// main.js
+const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const fs = require("fs");
+const path = require("path");
 
-// Keep a global reference of the window object
-let mainWindow
+// Create a global reference to the main window
+let mainWindow;
 
-function createWindow () {
-  // Create the browser window
+// Create a function to create the main window
+function createWindow() {
+  // Create a new browser window
   mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 1080,
+    width: 800,
+    height: 600,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
-    }
-  })  
-
-  // Load the index.html of the app
-  mainWindow.loadFile('index.html')
-
-  // Open the DevTools
-  mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed
-  mainWindow.on('closed', function () {
-    // Dereference the window object
-    mainWindow = null
-  })
-
-  // Create the menu
-  const menu = Menu.buildFromTemplate([
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'Open Project',
-          click () {
-            openProject()
-          }
-        },
-        {
-          label: 'Quit',
-          click () {
-            app.quit()
-          }
-        }
-      ]
+      contextIsolation: false, // This is a security risk, but required for CodeMirror to work
     },
-    {
-      label: 'Edit',
-      submenu: [
-        {
-          label: 'Undo',
-          role: 'undo'
-        },
-        {
-          label: 'Redo',
-          role: 'redo'
-        },
-        {
-          label: 'Cut',
-          role: 'cut'
-        },
-        {
-          label: 'Copy',
-          role: 'copy'
-        },
-        {
-          label: 'Paste',
-          role: 'paste'
-        },
-        {
-          label: 'Select All',
-          role: 'selectall'
-        }
-      ]
-    }
-  ])
-  Menu.setApplicationMenu(menu)
+  });
 
-  // Initialize the project path with an empty string
-  projectPath = ''
+  // Load the index.html file
+  mainWindow.loadFile("index.html");
+
+  // Open the dev tools
+  mainWindow.webContents.openDevTools();
+
+  // Handle the window closed event
+  mainWindow.on("closed", () => {
+    // Dereference the main window
+    mainWindow = null;
+  });
 }
 
+// Handle the ready event
+app.on("ready", createWindow);
 
-// This function opens a dialog to select a project folder
-function openProject () {
-  dialog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory']
-  }).then(result => {
-    if (!result.canceled) {
-      // Check if the selected folder is different from the current project path
-      if (result.filePaths[0] !== projectPath) {
-        // Send the project path to the renderer process
-        mainWindow.webContents.send('project-selected', result.filePaths[0])
-      }
-    }
-  }).catch(err => {
-    console.log(err)
-  })
-}
-
-
-// This function runs a python file and sends the output to the renderer process
-function runPython (file) {
-  // Spawn a child process to run the python file
-  const pyProcess = spawn('python', [file])
-
-  // Listen for the output data
-  pyProcess.stdout.on('data', (data) => {
-    // Send the output data to the renderer process
-    mainWindow.webContents.send('output-data', data.toString())
-  })
-
-  // Listen for the error data
-  pyProcess.stderr.on('data', (data) => {
-    // Send the error data to the renderer process
-    mainWindow.webContents.send('output-data', data.toString())
-  })
-
-  // Listen for the close event
-  pyProcess.on('close', (code) => {
-    // Send the exit code to the renderer process
-    mainWindow.webContents.send('output-data', `Process exited with code ${code}`)
-  })
-
-  // Listen for the input-data event from the renderer process
-  ipcMain.on('input-data', (event, input) => {
-    // Write the input value to the child process stdin
-    pyProcess.stdin.write(input + '\n')
-  })
-}
-
-// Listen for the ready event
-app.on('ready', createWindow)
-
-// Quit when all windows are closed
-app.on('window-all-closed', function () {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
+// Handle the window all closed event
+app.on("window-all-closed", () => {
+  // Quit the app if not on macOS
+  if (process.platform !== "darwin") {
+    app.quit();
   }
-})
+});
 
-app.on('activate', function () {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open
+// Handle the activate event
+app.on("activate", () => {
+  // Create the main window if not exists
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
-})
+});
 
-// Listen for the run-python event from the renderer process
-ipcMain.on('run-python', (event, file) => {
-  runPython(file)
-})
+// Handle the save-as message from the renderer process
+ipcMain.on("save-as", (event, arg) => {
+  // Show the save dialog
+  dialog
+    .showSaveDialog(mainWindow, {
+      title: "Save File",
+      filters: [{ name: "All Files", extensions: ["*"] }],
+    })
+    .then((result) => {
+      // If the result is not canceled, write the content to the file path
+      if (!result.canceled) {
+        const filePath = result.filePath;
+        const content = arg;
+        fs.writeFile(filePath, content, (err) => {
+          if (err) {
+            console.error(err);
+          } else {
+            // Send the save-reply message with the file path to the renderer process
+            event.reply("save-reply", filePath);
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
 
+// Handle the open message from the renderer process
+ipcMain.on("open", (event) => {
+  // Show the open dialog
+  dialog
+    .showOpenDialog(mainWindow, {
+      title: "Open File",
+      filters: [{ name: "All Files", extensions: ["*"] }],
+      properties: ["openFile"],
+    })
+    .then((result) => {
+      // If the result is not canceled, read the content from the file path
+      if (!result.canceled) {
+        const filePath = result.filePaths[0];
+        fs.readFile(filePath, "utf8", (err, data) => {
+          if (err) {
+            console.error(err);
+          } else {
+            // Send the open-reply message with the file path and content to the renderer process
+            event.reply("open-reply", { filePath, content: data });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});

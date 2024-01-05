@@ -1,145 +1,188 @@
-/* Nunito Font */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
-/* Some monospace font */
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap');
-
-/* This is the style.css file for the renderer process */
+/* style.css */
 * {
   box-sizing: border-box;
-  font-family: 'Nunito', sans-serif;
   margin: 0;
   padding: 0;
 }
 
-#container {
-  display: flex;
-  height: 100vh;
-  position: relative; /* Add position: relative to the container */
-}
-
-#sidebar {
-  width: 25%;
+#toolbar {
+  height: 30px;
   background-color: #333;
-  color: white;
-  overflow-y: auto;
+  color: #fff;
+  display: flex;
+  align-items: center;
 }
 
-#project-name {
-  padding: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-#file-list {
+#toolbar ul {
   list-style: none;
+  display: flex;
 }
 
-#file-list li {
-  padding: 10px;
+#toolbar li {
+  padding: 5px 10px;
   cursor: pointer;
 }
 
-#file-list li:hover {
-  background-color: #555;
+#toolbar li:hover {
+  background-color: #444;
+}
+
+#menu {
+  height: 40px;
+  background-color: #eee;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#menu button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+#menu button:hover {
+  background-color: #ddd;
+}
+
+#menu i {
+  margin-right: 5px;
+}
+
+#menu .hidden {
+  display: none;
 }
 
 #editor {
-  width: 75%;
-  display: flex;
-  flex-direction: column;
-  position: relative; /* Add position: relative to the editor */
-  height: 100%; /* Fill up the whole available height */
+  height: calc(100vh - 100px);
+  width: 100%;
 }
 
-#topbar {
-  height: 40px;
-  background-color: #222;
+#status-bar {
+  height: 30px;
+  background-color: #ccc;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  padding: 0 10px;
 }
 
-#file-name {
-  color: white;
-  font-size: 18px;
-}
-
-#run-button {
-  background-color: green;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
+#status-bar span {
   cursor: pointer;
 }
 
-#run-button:disabled {
-  background-color: gray;
-  cursor: not-allowed;
+#status-bar span:hover {
+  text-decoration: underline;
 }
 
-#code-area {
-  flex: 1;
-  resize: none;
-  font-size: 16px;
-  height: 100%; /* Fill up the whole available height */
-}
-
-#output {
-  height: 200px;
-  background-color: #111;
-  color: white;
-  overflow-y: auto;
-  padding: 10px;
-  position: absolute;
-  bottom: 40px; /* Adjusted bottom value for statusbar */
-  width: 100%; /* Take up the full width */
-  z-index: 3;
-}
-
-#output h2 {
-  font-size: 18px;
-}
-
-#output-data {
+.CodeMirror {
+  height: 100%;
   font-family: monospace;
-  font-size: 16px;
+  font-size: 14px;
 }
 
-#statusbar {
-  height: 40px;
+.CodeMirror-foldmarker {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.CodeMirror-foldgutter {
+  width: 15px;
+}
+
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+  cursor: pointer;
+}
+
+.cm-s-default .CodeMirror-foldgutter-open:after {
+  content: "\25BC";
+}
+
+.cm-s-default .CodeMirror-foldgutter-folded:after {
+  content: "\25B6";
+}
+
+.cm-s-default .CodeMirror-linenumber {
+  padding: 0 3px 0 5px;
+}
+
+.cm-s-dark {
   background-color: #222;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  position: absolute;
-  bottom: 0; /* Stick to the bottom */
-  width: 100%; /* Take up the full width */
-  z-index: 3;
+  color: #fff;
 }
 
-#status {
-  color: white;
-  font-size: 16px;
+.cm-s-dark .CodeMirror-cursor {
+  border-left: 1px solid #fff;
 }
 
-.CodeMirror,
-.CodeMirror pre,
-.CodeMirror-scroll {
-  font-family: 'Roboto Mono', monospace !important; /* Use the monospace font for CodeMirror */
+.cm-s-dark .CodeMirror-linenumber {
+  color: #aaa;
 }
 
-/* Below output, a sibling of #output */
-#input {
-  height: 40px;
-  background-color: #222;
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  position: absolute;
-  bottom: 240px; /* Adjusted bottom value for statusbar and output */
-  width: 100%; /* Take up the full width */
-  z-index: 3;
+.cm-s-dark .CodeMirror-gutters {
+  background-color: #333;
+  border-right: 0;
+}
+
+.cm-s-dark .CodeMirror-selected {
+  background-color: #444 !important;
+}
+
+.cm-s-dark .CodeMirror-line::selection,
+.cm-s-dark .CodeMirror-line > span::selection,
+.cm-s-dark .CodeMirror-line > span > span::selection {
+  background-color: #444 !important;
+}
+
+.cm-s-dark .CodeMirror-activeline-background {
+  background-color: #333;
+}
+
+.cm-s-dark .CodeMirror-matchingbracket {
+  outline: 1px solid #888;
+  color: #fff !important;
+}
+
+.cm-s-dark .CodeMirror-matchingtag {
+  background-color: #444;
+  outline: 1px solid #888;
+}
+
+.cm-s-dark .CodeMirror-hint {
+  background: #333;
+  color: #fff;
+}
+
+.cm-s-dark .CodeMirror-hint-active {
+  background: #444;
+}
+
+.cm-s-dark .CodeMirror-hint .CodeMirror-hint-deprecated {
+  color: #888;
+}
+
+.cm-s-dark .CodeMirror-dialog {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #888;
+}
+
+.cm-s-dark .CodeMirror-dialog input {
+  border: none;
+  background-color: #444;
+  color: #fff;
+}
+
+.cm-s-dark .CodeMirror-dialog button {
+  border: none;
+  background-color: #444;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cm-s-dark .CodeMirror-dialog button:hover {
+  background-color: #555;
 }

@@ -1,41 +1,59 @@
-<!-- This is the index.html file for the renderer process -->
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Simple Code Editor</title>
+  <title>PrismBlue Code</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/foldgutter.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/hint/show-hint.min.css">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
 </head>
 <body>
-  <div id="container">
-    <div id="sidebar">
-      <h1 id="project-name">No Project Selected</h1>
-      <ul id="file-list"></ul>
+  <div id="toolbar">
+    <ul>
+      <li id="file">File</li>
+      <li id="edit">Edit</li>
+      <li id="view">View</li>
+    </ul>
+  </div>
+  <div id="menu">
+    <div id="file-menu" class="hidden">
+      <button id="save"><i class="fas fa-save"></i> Save</button>
+      <button id="save-as"><i class="fas fa-save"></i> Save As</button>
+      <button id="open"><i class="fas fa-folder-open"></i> Open</button>
     </div>
-    <div id="editor">
-      <div id="topbar">
-        <span id="file-name">Untitled</span>
-        <button id="run-button" disabled><i class="fas fa-play"></i> Run</button>
-      </div>
-      <textarea id="code-area"></textarea>
-      <div id="output">
-        <h2>Output</h2>
-        <pre id="output-data"></pre>
-      </div>
-      <div id="input">
-        <h2>Input</h2>
-        <input id="input-field" type="text" placeholder="Type here...">
-      </div>      
-      <div id="statusbar">
-        <span id="status">Ready</span>
-      </div>
+    <div id="edit-menu" class="hidden">
+      <button id="undo"><i class="fas fa-undo"></i> Undo</button>
+      <button id="redo"><i class="fas fa-redo"></i> Redo</button>
+      <button id="cut"><i class="fas fa-cut"></i> Cut</button>
+      <button id="copy"><i class="fas fa-copy"></i> Copy</button>
+      <button id="paste"><i class="fas fa-paste"></i> Paste</button>
+      <button id="find"><i class="fas fa-search"></i> Find</button>
+    </div>
+    <div id="view-menu" class="hidden">
+      <button id="theme"><i class="fas fa-adjust"></i> Theme</button>
     </div>
   </div>
+  <div id="editor"></div>
+  <div id="status-bar">
+    <span id="file-status">Unsaved Changes</span>
+    <span id="file-lang">Plain Text</span>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/meta.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/foldcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/foldgutter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/brace-fold.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/comment-fold.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/indent-fold.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/hint/anyword-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/search/search.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/search/searchcursor.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/search/jump-to-line.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/dialog/dialog.min.js"></script>
   <script src="renderer.js"></script>
 </body>
 </html>
