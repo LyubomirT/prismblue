@@ -203,10 +203,11 @@ fileLang.addEventListener("click", () => {
 
     // Load the mode script if needed
     if (info.mode && info.mode !== mime) {
-      CodeMirror.requireMode(info.mode, () => {
+      CodeMirror.autoLoadMode(editor, info.mode, () => {
         editor.setOption("mode", mime);
       });
     }
+
 
     // Create a new file language span with the mode name
     const span = document.createElement("span");
@@ -288,10 +289,11 @@ ipcRenderer.on("open-reply", (event, arg) => {
 
       // Load the mode script if needed
       if (info.mode && info.mode !== mime) {
-        CodeMirror.requireMode(info.mode, () => {
+        CodeMirror.autoLoadMode(editor, info.mode, () => {
           editor.setOption("mode", mime);
         });
       }
+
     }
   }
 });
