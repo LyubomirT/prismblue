@@ -1,3 +1,6 @@
+/* Consolas font */
+@import url('https://fonts.googleapis.com/css?family=Consolas');
+
 /* style.css */
 * {
   box-sizing: border-box;
@@ -78,7 +81,7 @@
 
 .CodeMirror {
   height: 100%;
-  font-family: monospace;
+  font-family: "Consolas", "Courier New", monospace;
   font-size: 14px;
 }
 

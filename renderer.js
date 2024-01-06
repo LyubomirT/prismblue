@@ -34,6 +34,14 @@ const editor = CodeMirror(editorDiv, {
     "Ctrl-F": "find",
     "Ctrl-G": "jumpToLine",
   },
+  foldOptions: {
+    widget: "\u2194", // Unicode character for the triangle icon
+  },
+  hintOptions: {
+    hint: CodeMirror.hint.anyword,
+    completeSingle: false,
+  },
+  search: true,
 });
 
 // Set the default theme
