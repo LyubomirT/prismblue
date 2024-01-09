@@ -1,191 +1,165 @@
-/* Consolas font */
-@import url('https://fonts.googleapis.com/css?family=Consolas');
-
-/* style.css */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-#toolbar {
-  height: 30px;
-  background-color: #333;
-  color: #fff;
+#menu-bar {
   display: flex;
   align-items: center;
+  background-color: #333;
+  height: 30px;
 }
 
-#toolbar ul {
-  list-style: none;
-  display: flex;
-}
-
-#toolbar li {
+.menu-button {
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
   padding: 5px 10px;
   cursor: pointer;
 }
 
-#toolbar li:hover {
-  background-color: #444;
+.menu-button:hover {
+  background-color: #555;
 }
 
-#menu {
-  height: 40px;
-  background-color: #eee;
+#panel {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  background-color: #eee;
+  height: 40px;
+  border-bottom: 1px solid #ccc;
 }
 
-#menu button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  margin: 0 5px;
-}
-
-#menu button:hover {
-  background-color: #ddd;
-}
-
-#menu i {
-  margin-right: 5px;
-}
-
-#menu .hidden {
+.sub-panel {
   display: none;
 }
 
+.sub-button {
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sub-button:hover {
+  background-color: #ddd;
+}
+
+.sub-button i {
+  margin-right: 5px;
+}
+
 #editor {
-  height: calc(100vh - 100px);
+  position: relative;
+  height: calc(100vh - 71px);
+}
+
+#editor-textarea {
   width: 100%;
+  height: 95%;
+  border: none;
+  resize: none;
+  outline: none;
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  padding: 10px;
 }
 
 #status-bar {
-  height: 30px;
-  background-color: #ccc;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  justify-content: space-between;
+  background-color: #eee;
+  height: 30px;
+  border-top: 1px solid #ccc;
 }
 
-#status-bar span {
+#status-bar div {
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 300px;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
   cursor: pointer;
 }
 
-#status-bar span:hover {
-  text-decoration: underline;
+.modal-content h3 {
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-.CodeMirror {
-  height: 100%;
-  font-family: "Consolas", "Courier New", monospace;
+.modal-content input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
   font-size: 14px;
 }
 
-.CodeMirror-foldmarker {
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.CodeMirror-foldgutter {
-  width: 15px;
-}
-
-.CodeMirror-foldgutter-open,
-.CodeMirror-foldgutter-folded {
-  cursor: pointer;
-}
-
-.cm-s-default .CodeMirror-foldgutter-open:after {
-  content: "\25BC";
-}
-
-.cm-s-default .CodeMirror-foldgutter-folded:after {
-  content: "\25B6";
-}
-
-.cm-s-default .CodeMirror-linenumber {
-  padding: 0 3px 0 5px;
-}
-
-.cm-s-dark {
-  background-color: #222;
-  color: #fff;
-}
-
-.cm-s-dark .CodeMirror-cursor {
-  border-left: 1px solid #fff;
-}
-
-.cm-s-dark .CodeMirror-linenumber {
-  color: #aaa;
-}
-
-.cm-s-dark .CodeMirror-gutters {
-  background-color: #333;
-  border-right: 0;
-}
-
-.cm-s-dark .CodeMirror-selected {
-  background-color: #444 !important;
-}
-
-.cm-s-dark .CodeMirror-line::selection,
-.cm-s-dark .CodeMirror-line > span::selection,
-.cm-s-dark .CodeMirror-line > span > span::selection {
-  background-color: #444 !important;
-}
-
-.cm-s-dark .CodeMirror-activeline-background {
-  background-color: #333;
-}
-
-.cm-s-dark .CodeMirror-matchingbracket {
-  outline: 1px solid #888;
-  color: #fff !important;
-}
-
-.cm-s-dark .CodeMirror-matchingtag {
-  background-color: #444;
-  outline: 1px solid #888;
-}
-
-.cm-s-dark .CodeMirror-hint {
-  background: #333;
-  color: #fff;
-}
-
-.cm-s-dark .CodeMirror-hint-active {
-  background: #444;
-}
-
-.cm-s-dark .CodeMirror-hint .CodeMirror-hint-deprecated {
-  color: #888;
-}
-
-.cm-s-dark .CodeMirror-dialog {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #888;
-}
-
-.cm-s-dark .CodeMirror-dialog input {
+.modal-content button {
+  width: 100%;
+  padding: 10px;
   border: none;
-  background-color: #444;
-  color: #fff;
-}
-
-.cm-s-dark .CodeMirror-dialog button {
-  border: none;
-  background-color: #444;
-  color: #fff;
+  background-color: #333;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.cm-s-dark .CodeMirror-dialog button:hover {
+.modal-content button:hover {
   background-color: #555;
+}
+
+.modal-content label {
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.modal-content select {
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }

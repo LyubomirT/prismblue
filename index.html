@@ -1,67 +1,74 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>PrismBlue Code</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/codemirror.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/foldgutter.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/hint/show-hint.min.css">
+  <title>Prismblue</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-  <div id="toolbar">
-    <ul>
-      <li id="file">File</li>
-      <li id="edit">Edit</li>
-      <li id="view">View</li>
-    </ul>
+  <div id="menu-bar">
+    <div class="menu-button" id="file-button">File</div>
+    <div class="menu-button" id="edit-button">Edit</div>
+    <div class="menu-button" id="view-button">View</div>
   </div>
-  <div id="menu">
-    <div id="file-menu" class="hidden">
-      <button id="save"><i class="fas fa-save"></i> Save</button>
-      <button id="save-as"><i class="fas fa-save"></i> Save As</button>
-      <button id="open"><i class="fas fa-folder-open"></i> Open</button>
+  <div id="panel">
+    <div id="file-panel" class="sub-panel">
+      <div class="sub-button" id="open-button"><i class="fas fa-folder-open"></i> Open</div>
+      <div class="sub-button" id="save-button"><i class="fas fa-save"></i> Save</div>
+      <div class="sub-button" id="save-as-button"><i class="fas fa-file-export"></i> Save As</div>
+      <div class="sub-button" id="exit-button"><i class="fas fa-sign-out-alt"></i> Exit</div>
     </div>
-    <div id="edit-menu" class="hidden">
-      <button id="undo"><i class="fas fa-undo"></i> Undo</button>
-      <button id="redo"><i class="fas fa-redo"></i> Redo</button>
-      <button id="cut"><i class="fas fa-cut"></i> Cut</button>
-      <button id="copy"><i class="fas fa-copy"></i> Copy</button>
-      <button id="paste"><i class="fas fa-paste"></i> Paste</button>
-      <button id="find"><i class="fas fa-search"></i> Find</button>
+    <div id="edit-panel" class="sub-panel">
+      <div class="sub-button" id="copy-button"><i class="fas fa-copy"></i> Copy</div>
+      <div class="sub-button" id="paste-button"><i class="fas fa-paste"></i> Paste</div>
+      <div class="sub-button" id="cut-button"><i class="fas fa-cut"></i> Cut</div>
+      <div class="sub-button" id="select-all-button"><i class="fas fa-check-double"></i> Select All</div>
+      <div class="sub-button" id="find-button"><i class="fas fa-search"></i> Find</div>
     </div>
-    <div id="view-menu" class="hidden">
-      <button id="theme"><i class="fas fa-adjust"></i> Theme</button>
+    <div id="view-panel" class="sub-panel">
+      <div class="sub-button" id="toggle-theme-button"><i class="fas fa-adjust"></i> Toggle Theme</div>
+      <div class="sub-button" id="font-settings-button"><i class="fas fa-font"></i> Font Settings</div>
+      <div class="sub-button" id="toggle-status-bar-button"><i class="fas fa-info-circle"></i> Toggle Status Bar</div>
     </div>
   </div>
-  <div id="editor"></div>
+  <div id="editor">
+    <textarea id="editor-textarea"></textarea>
+  </div>
   <div id="status-bar">
-    <span id="file-status">Unsaved Changes</span>
-    <span id="file-lang">Plain Text</span>
+    <div id="changes">Unsaved</div>
+    <div id="filename">Untitled</div>
+    <div id="row-col">1:1</div>
+    <div id="total-size">0 bytes</div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/meta.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/foldcode.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/foldgutter.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/brace-fold.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/comment-fold.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/fold/indent-fold.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/hint/show-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/hint/anyword-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/search/search.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/search/searchcursor.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/search/jump-to-line.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/dialog/dialog.min.js"></script>
-  <!-- loadmode -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/addon/mode/loadmode.min.js"></script>
-  <!-- mode -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/css/css.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/htmlmixed/htmlmixed.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/xml/xml.min.js"></script>
-  
+  <div id="find-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">×</span>
+      <h3>Find</h3>
+      <input type="text" id="find-input" placeholder="Enter text to find...">
+      <button id="find-next-button">Find Next</button>
+      <button id="find-prev-button">Find Previous</button>
+      <button id="replace-button">Replace</button>
+      <button id="replace-all-button">Replace All</button>
+      <input type="text" id="replace-input" placeholder="Enter text to replace with...">
+    </div>
+  </div>
+  <div id="font-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">×</span>
+      <h3>Font Settings</h3>
+      <label for="font-select">Font:</label>
+      <select id="font-select">
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+      <label for="font-size-input">Font Size:</label>
+      <input type="number" id="font-size-input" value="16">
+      <button id="apply-font-button">Apply</button>
+    </div>
+  </div>
   <script src="renderer.js"></script>
 </body>
 </html>

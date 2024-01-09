@@ -1,107 +1,129 @@
-// main.js
-const { app, BrowserWindow, dialog, ipcMain } = require("electron");
-const fs = require("fs");
-const path = require("path");
+// Modules to control application life and create native browser window
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const path = require('path')
+const fs = require('fs')
 
-// Create a global reference to the main window
-let mainWindow;
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow
 
-// Create a function to create the main window
-function createWindow() {
-  // Create a new browser window
+function createWindow () {
+  // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false, // This is a security risk, but required for CodeMirror to work
-    },
-  });
+      contextIsolation: false // This is the default value anyway
+    }
+  })
 
-  // Load the index.html file
-  mainWindow.loadFile("index.html");
+  // and load the index.html of the app.
+  mainWindow.loadFile('index.html')
 
-  // Open the dev tools
-  mainWindow.webContents.openDevTools();
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools()
 
-  // Handle the window closed event
-  mainWindow.on("closed", () => {
-    // Dereference the main window
-    mainWindow = null;
-  });
+  // Emitted when the window is closed.
+  mainWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null
+  })
 }
 
-// Handle the ready event
-app.on("ready", createWindow);
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', createWindow)
 
-// Handle the window all closed event
-app.on("window-all-closed", () => {
-  // Quit the app if not on macOS
-  if (process.platform !== "darwin") {
-    app.quit();
+// Quit when all windows are closed.
+app.on('window-all-closed', function () {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit()
   }
-});
+})
 
-// Handle the activate event
-app.on("activate", () => {
-  // Create the main window if not exists
+app.on('activate', function () {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow();
+    createWindow()
   }
-});
+})
 
-// Handle the save-as message from the renderer process
-ipcMain.on("save-as", (event, arg) => {
-  // Show the save dialog
-  dialog
-    .showSaveDialog(mainWindow, {
-      title: "Save File",
-      filters: [{ name: "All Files", extensions: ["*"] }],
-    })
-    .then((result) => {
-      // If the result is not canceled, write the content to the file path
-      if (!result.canceled) {
-        const filePath = result.filePath;
-        const content = arg;
-        fs.writeFile(filePath, content, (err) => {
-          if (err) {
-            console.error(err);
-          } else {
-            // Send the save-reply message with the file path to the renderer process
-            event.reply("save-reply", filePath);
-          }
-        });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-});
+// Handle IPC messages from renderer process
+ipcMain.on('message', (event, arg) => {
+  switch (arg) {
+    case 'open':
+      openFile()
+      break
+    case 'save':
+      saveFile()
+      break
+    case 'save-as':
+      saveFileAs()
+      break
+    case 'exit':
+      app.quit()
+      break
+    default:
+      console.log('Unknown message: ' + arg)
+  }
+})
 
-// Handle the open message from the renderer process
-ipcMain.on("open", (event) => {
-  // Show the open dialog
-  dialog
-    .showOpenDialog(mainWindow, {
-      title: "Open File",
-      filters: [{ name: "All Files", extensions: ["*"] }],
-      properties: ["openFile"],
-    })
-    .then((result) => {
-      // If the result is not canceled, read the content from the file path
-      if (!result.canceled) {
-        const filePath = result.filePaths[0];
-        fs.readFile(filePath, "utf8", (err, data) => {
-          if (err) {
-            console.error(err);
-          } else {
-            // Send the open-reply message with the file path and content to the renderer process
-            event.reply("open-reply", { filePath, content: data });
-          }
-        });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-});
+// Open a file and send its content to the renderer process
+function openFile() {
+  dialog.showOpenDialog(mainWindow, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Text Files', extensions: ['txt'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  }).then(result => {
+    if (!result.canceled) {
+      let filePath = result.filePaths[0]
+      let fileName = path.basename(filePath)
+      let fileContent = fs.readFileSync(filePath, 'utf8')
+      mainWindow.webContents.send('file-opened', fileName, fileContent)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+// Save the current file
+function saveFile() {
+  mainWindow.webContents.send('file-save')
+}
+
+// Save the current file as a new file
+function saveFileAs() {
+  dialog.showSaveDialog(mainWindow, {
+    filters: [
+      { name: 'Text Files', extensions: ['txt'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  }).then(result => {
+    if (!result.canceled) {
+      let filePath = result.filePath
+      mainWindow.webContents.send('file-save-as', filePath)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+// Receive the file content from the renderer process and write it to the file
+ipcMain.on('file-content', (event, filePath, fileContent) => {
+  fs.writeFile(filePath, fileContent, (err) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('File saved: ' + filePath)
+    }
+  })
+})
