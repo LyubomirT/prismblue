@@ -539,7 +539,7 @@ function findPrev() {
 function replace() {
   let input = findInput.value;
   let replaceText = replaceInput.value;
-  if (input && replaceText) {
+  if (input) {
     if (currentSearchResults.length > 0 && currentSearchIndex >= 0) {
       // Get the current index and the file content
       let index = currentSearchResults[currentSearchIndex];
@@ -561,7 +561,7 @@ function replace() {
 function replaceAll() {
   let input = findInput.value;
   let replaceText = replaceInput.value;
-  if (input && replaceText) {
+  if (input) {
     // Get the file content
     let fileContent = editorTextarea.value;
     // Replace all the input text with the replace text
