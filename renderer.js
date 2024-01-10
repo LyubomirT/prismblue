@@ -37,6 +37,7 @@ const fontModal = document.getElementById('font-modal')
 const fontSelect = document.getElementById('font-select')
 const fontSizeInput = document.getElementById('font-size-input')
 const applyFontButton = document.getElementById('apply-font-button')
+const newButton = document.getElementById('new-button')
 
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
@@ -130,6 +131,10 @@ editorTextarea.addEventListener('click', () => {
 
 editorTextarea.addEventListener('keyup', () => {
   updateRowCol()
+})
+
+newButton.addEventListener('click', () => {
+  startBlank()
 })
 
 // Add event listeners to the modals
@@ -486,15 +491,29 @@ function highlightSearchResults() {
   }
 }
 
-
-// Ctrl+S to save OR Cmd+S to save. Means Ctrl+Shift+S to save as OR Cmd+Shift+S to save as
 document.addEventListener('keydown', (event) => {
-  if (event.ctrlKey && event.key === 's') {
+  console.log('Ctrl:', event.ctrlKey, 'Code:', event.code, 'Shift:', event.shiftKey);
+
+  if (event.ctrlKey && event.code === 'KeyS') {
     if (event.shiftKey) {
-      ipcRenderer.send('message', 'save-as')
+      console.log('Save As');
+      ipcRenderer.send('message', 'save-as');
     } else {
-      ipcRenderer.send('message', 'save')
+      console.log('Save');
+      ipcRenderer.send('message', 'save');
     }
-    event.preventDefault()
+    event.preventDefault();
   }
-})
+});
+
+
+function startBlank() {
+  currentFilePath = null
+  currentFileContent = ''
+  editorTextarea.value = ''
+  filename.textContent = 'Untitled'
+  changes.textContent = 'New File'
+  updateTotalSize()
+  updateRowCol()
+  resetSearch()
+}
