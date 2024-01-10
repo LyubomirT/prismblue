@@ -52,14 +52,25 @@ let currentSearchResults = [] // The current array of the search results
 // Add event listeners to the menu buttons
 fileButton.addEventListener('click', () => {
   togglePanel(filePanel)
+  // Set a custom "state" (="active") attribute on the button
+  // so that we can style it differently using CSS
+  fileButton.setAttribute('state', 'active')
+  editButton.removeAttribute('state')
+  viewButton.removeAttribute('state')
 })
 
 editButton.addEventListener('click', () => {
   togglePanel(editPanel)
+  fileButton.removeAttribute('state')
+  editButton.setAttribute('state', 'active')
+  viewButton.removeAttribute('state')
 })
 
 viewButton.addEventListener('click', () => {
   togglePanel(viewPanel)
+  fileButton.removeAttribute('state')
+  editButton.removeAttribute('state')
+  viewButton.setAttribute('state', 'active')
 })
 
 // Add event listeners to the sub buttons

@@ -31,6 +31,11 @@
   background-color: #555;
 }
 
+.menu-button[state="active"] {
+  background-color: #464646;
+  border-bottom: 1px solid #ffffff;
+}
+
 #panel {
   display: flex;
   align-items: center;
@@ -51,6 +56,9 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  background-color: rgba(255, 233, 233, 0);
 }
 
 .sub-button:hover {
