@@ -311,6 +311,7 @@ ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
   editorTextarea.value = fileContent
   filename.textContent = fileName
   changes.textContent = 'File Opened'
+  document.title = fileName + ' - Prismblue'
   updateTotalSize()
   updateRowCol()
   resetSearch()
@@ -337,6 +338,7 @@ ipcRenderer.on('file-save-as', (event, filePath) => {
   currentFileContent = fileContent
   filename.textContent = filePath
   changes.textContent = 'File Ready'
+  document.title = filePath + ' - Prismblue'
   resetSearch()
 })
 
@@ -622,6 +624,7 @@ function startBlank() {
   updateTotalSize()
   updateRowCol()
   resetSearch()
+  document.title = 'Untitled - Prismblue'
 }
 
 // Function to add the current state to the action history
