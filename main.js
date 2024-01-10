@@ -20,7 +20,9 @@ function createWindow () {
     },
     icon: path.join(__dirname, 'brand/PBC_LOGO.ico'),
     // No Menu
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    // No Header
+    frame: false
   })
 
   // and load the index.html of the app.
@@ -74,6 +76,15 @@ ipcMain.on('message', (event, arg) => {
       break
     case 'exit':
       app.quit()
+      break
+    case 'minimize':
+      mainWindow.minimize()
+      break
+    case 'maximize':
+      mainWindow.maximize()
+      break
+    case 'unmaximize':
+      mainWindow.unmaximize()
       break
     default:
       console.log('Unknown message: ' + arg)

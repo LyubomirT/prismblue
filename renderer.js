@@ -1,5 +1,5 @@
 // Modules to communicate with main process
-const { ipcRenderer, remote } = require('electron')
+const { ipcRenderer } = require('electron')
 const fs = require('fs')
 
 // Get the DOM elements
@@ -47,7 +47,29 @@ const restoreButton = document.getElementById('restore-button')
 const restoreModal = document.getElementById('restore-modal')
 const restoreAlreadyThere = document.getElementById('restore-already-there')
 const failedRestore = document.getElementById('failed-restore')
+const close_Button = document.getElementById('close_-button')
+const minimizeButton = document.getElementById('mini-button')
+const maximizeButton = document.getElementById('maxi-button')
 
+let maximized = false
+
+close_Button.addEventListener('click', () => {
+  ipcRenderer.send('message', 'exit')
+})
+
+minimizeButton.addEventListener('click', () => {
+  ipcRenderer.send('message', 'minimize')
+})
+
+maximizeButton.addEventListener('click', () => {
+  if (maximized) {
+    ipcRenderer.send('message', 'unmaximize')
+    maximized = false
+  } else {
+    ipcRenderer.send('message', 'maximize')
+    maximized = true
+  }
+})
 
 // Initialize the action history and redo stack
 let lastSession = {}

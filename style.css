@@ -29,6 +29,10 @@ body {
   font-family: 'Muli', sans-serif !important;
 }
 
+i {
+  cursor: pointer !important;
+}
+
 
 
 :not(input):not(textarea),
@@ -46,11 +50,49 @@ body {
   height: 30px;
 }
 
+.draggable {
+  -webkit-app-region: drag;
+  cursor: move;
+  flex-grow: 1; /* Use flex-grow to fill the remaining space */
+  min-height: 30px; /* Set a minimum height to visually occupy space */
+}
+
+
 .menu-button {
   color: white;
   font-size: 14px;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  flex-direction: row;
+  float: right;
+}
+
+/* Control buttons are different from menu buttons */
+
+.control-button {
+  color: #fff;
+  font-size: 14px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.control-button:hover {
+  background-color: #555;
+}
+
+.menu-button:hover {
+  background-color: #555;
 }
 
 .menu-button:hover {
