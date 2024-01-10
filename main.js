@@ -17,7 +17,10 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false // This is the default value anyway
-    }
+    },
+    icon: path.join(__dirname, 'brand/PBC_LOGO.ico'),
+    // No Menu
+    autoHideMenuBar: true
   })
 
   // and load the index.html of the app.
