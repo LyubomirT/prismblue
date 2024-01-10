@@ -300,3 +300,56 @@ body[theme="dark"] {
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
+
+/* Media query for smaller windows */
+@media screen and (max-width: 900px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  #menu-bar {
+    height: 20px;
+  }
+
+  .menu-button {
+    font-size: 12px;
+    padding: 3px 6px;
+  }
+
+  #panel {
+    height: 30px;
+  }
+
+  .sub-button {
+    font-size: 12px;
+    padding: 3px 6px;
+  }
+
+  #editor {
+    height: calc(100vh - 51px);
+  }
+
+  #status-bar {
+    height: 20px;
+  }
+
+  #status-bar div {
+    font-size: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .modal-content {
+    width: 250px;
+  }
+
+  .modal-content input,
+  .modal-content select {
+    width: calc(100% - 10px);
+  }
+
+  .modal-content button {
+    padding: 8px;
+  }
+}
