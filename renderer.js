@@ -38,6 +38,8 @@ const fontSelect = document.getElementById('font-select')
 const fontSizeInput = document.getElementById('font-size-input')
 const applyFontButton = document.getElementById('apply-font-button')
 const newButton = document.getElementById('new-button')
+const historyButton = document.getElementById('history-button')
+const historyPanel = document.getElementById('history-panel')
 
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
@@ -57,6 +59,7 @@ fileButton.addEventListener('click', () => {
   fileButton.setAttribute('state', 'active')
   editButton.removeAttribute('state')
   viewButton.removeAttribute('state')
+  historyButton.removeAttribute('state')
 })
 
 editButton.addEventListener('click', () => {
@@ -64,6 +67,7 @@ editButton.addEventListener('click', () => {
   fileButton.removeAttribute('state')
   editButton.setAttribute('state', 'active')
   viewButton.removeAttribute('state')
+  historyButton.removeAttribute('state')
 })
 
 viewButton.addEventListener('click', () => {
@@ -71,6 +75,15 @@ viewButton.addEventListener('click', () => {
   fileButton.removeAttribute('state')
   editButton.removeAttribute('state')
   viewButton.setAttribute('state', 'active')
+  historyButton.removeAttribute('state')
+})
+
+historyButton.addEventListener('click', () => {
+  togglePanel(historyPanel)
+  fileButton.removeAttribute('state')
+  editButton.removeAttribute('state')
+  viewButton.removeAttribute('state')
+  historyButton.setAttribute('state', 'active')
 })
 
 // Add event listeners to the sub buttons
