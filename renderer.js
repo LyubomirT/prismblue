@@ -63,14 +63,6 @@ function savePreferences() {
   fs.writeFileSync('preferences.json', JSON.stringify(preferences))
 }
 
-function loadPreferences() {
-  try {
-    preferences = JSON.parse(fs.readFileSync('preferences.json', 'utf8'))
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
 let currentFileContent = '' // The content of the current file
@@ -80,6 +72,27 @@ let currentFontSize = 16 // The current font size
 let currentStatusBar = true // The current status bar visibility
 let currentSearchIndex = -1 // The current index of the search result
 let currentSearchResults = [] // The current array of the search results
+
+function loadPreferences() {
+  try {
+    preferences = JSON.parse(fs.readFileSync('preferences.json', 'utf8'))
+    if (preferences.theme === 'dark') {
+      toggleTheme()
+    }
+    currentFont = preferences.font
+    currentFontSize = preferences.fontSize
+    fontSelect.value = currentFont
+    fontSizeInput.value = currentFontSize
+    applyFont()
+    if (!preferences.statusBar) {
+      toggleStatusBar()
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+loadPreferences()
 
 // Add event listeners to the menu buttons
 fileButton.addEventListener('click', () => {
@@ -402,6 +415,8 @@ function toggleTheme() {
     toggleThemeButton.innerHTML = '<i class="fas fa-adjust"></i> Toggle Theme (Light)'
     currentTheme = 'light'
   }
+  preferences.theme = currentTheme
+  savePreferences()
 }
 
 // Toggle the status bar
@@ -417,6 +432,8 @@ function toggleStatusBar() {
     editor.style.height = 'calc(100vh - 71px)'
     toggleStatusBarButton.innerHTML = '<i class="fas fa-info-circle"></i> Toggle Status Bar (On)'
   }
+  preferences.statusBar = currentStatusBar
+  savePreferences()
 }
 
 // Apply the font settings
@@ -428,6 +445,9 @@ function applyFont() {
   editorTextarea.style.fontFamily = font
   editorTextarea.style.fontSize = fontSize + 'px'
   closeModal(fontModal)
+  preferences.font = currentFont
+  preferences.fontSize = currentFontSize
+  savePreferences()
 }
 
 // Find the next occurrence of the input text
