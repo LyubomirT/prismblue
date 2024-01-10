@@ -50,6 +50,7 @@ const failedRestore = document.getElementById('failed-restore')
 const close_Button = document.getElementById('close_-button')
 const minimizeButton = document.getElementById('mini-button')
 const maximizeButton = document.getElementById('maxi-button')
+const title = document.getElementById('title')
 
 let maximized = false
 
@@ -334,6 +335,7 @@ ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
   filename.textContent = fileName
   changes.textContent = 'File Opened'
   document.title = fileName + ' - Prismblue'
+  title.textContent = fileName + ' - Prismblue'
   updateTotalSize()
   updateRowCol()
   resetSearch()
@@ -361,6 +363,7 @@ ipcRenderer.on('file-save-as', (event, filePath) => {
   filename.textContent = filePath
   changes.textContent = 'File Ready'
   document.title = filePath + ' - Prismblue'
+  title.textContent = filePath + ' - Prismblue'
   resetSearch()
 })
 
@@ -647,6 +650,7 @@ function startBlank() {
   updateRowCol()
   resetSearch()
   document.title = 'Untitled - Prismblue'
+  title.textContent = 'Untitled - Prismblue'
 }
 
 // Function to add the current state to the action history

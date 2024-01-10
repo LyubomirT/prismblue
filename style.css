@@ -55,6 +55,12 @@ i {
   cursor: move;
   flex-grow: 1; /* Use flex-grow to fill the remaining space */
   min-height: 30px; /* Set a minimum height to visually occupy space */
+  color: white;
+  font-size: 12px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
 }
 
 #menu-bar img {
