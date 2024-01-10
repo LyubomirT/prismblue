@@ -133,17 +133,42 @@ editorTextarea.addEventListener('keyup', () => {
 })
 
 // Add event listeners to the modals
-findModal.addEventListener('click', (event) => {
-  if (event.target.className === 'modal') {
-    closeModal(findModal)
+findModal.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    findModal.initialClickX = event.clientX;
+    findModal.initialClickY = event.clientY;
   }
-})
+});
 
-fontModal.addEventListener('click', (event) => {
-  if (event.target.className === 'modal') {
-    closeModal(fontModal)
+findModal.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    findModal.initialClickX === event.clientX &&
+    findModal.initialClickY === event.clientY
+  ) {
+    closeModal(findModal);
   }
-})
+});
+
+fontModal.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    fontModal.initialClickX = event.clientX;
+    fontModal.initialClickY = event.clientY;
+  }
+});
+
+fontModal.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    fontModal.initialClickX === event.clientX &&
+    fontModal.initialClickY === event.clientY
+  ) {
+    closeModal(fontModal);
+  }
+});
+
 
 // Add event listeners to the modal buttons
 findModal.querySelector('.close-button').addEventListener('click', () => {
