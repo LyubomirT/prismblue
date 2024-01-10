@@ -315,95 +315,97 @@ function applyFont() {
 
 // Find the next occurrence of the input text
 function findNext() {
-  let input = findInput.value
+  let input = findInput.value;
   if (input) {
     if (currentSearchResults.length === 0) {
       // First time search
-      let fileContent = editorTextarea.value
-      let regex = new RegExp(input, 'gi')
-      let match
+      let fileContent = editorTextarea.value;
+      let regex = new RegExp(input, 'gi');
+      let match;
       while ((match = regex.exec(fileContent)) !== null) {
-        currentSearchResults.push(match.index)
+        currentSearchResults.push(match.index);
       }
-      currentSearchResults.sort((a, b) => a - b)
+      currentSearchResults.sort((a, b) => a - b);
     }
     if (currentSearchResults.length > 0) {
       // Move to the next index
-      currentSearchIndex = (currentSearchIndex + 1) % currentSearchResults.length
-      let index = currentSearchResults[currentSearchIndex]
+      currentSearchIndex = (currentSearchIndex + 1) % currentSearchResults.length;
+      let index = currentSearchResults[currentSearchIndex];
       // Select the text and scroll to it
-      editorTextarea.setSelectionRange(index, index + input.length)
-      editorTextarea.scrollTop = editorTextarea.scrollHeight * (index / editorTextarea.value.length)
+      editorTextarea.setSelectionRange(index, index + input.length);
+      editorTextarea.focus(); // Added focus to ensure highlighting works
+      editorTextarea.scrollTop = editorTextarea.scrollHeight * (index / editorTextarea.value.length);
       // Highlight the search results
-      highlightSearchResults()
+      highlightSearchResults();
     }
   }
 }
 
 // Find the previous occurrence of the input text
 function findPrev() {
-  let input = findInput.value
+  let input = findInput.value;
   if (input) {
     if (currentSearchResults.length === 0) {
       // First time search
-      let fileContent = editorTextarea.value
-      let regex = new RegExp(input, 'gi')
-      let match
+      let fileContent = editorTextarea.value;
+      let regex = new RegExp(input, 'gi');
+      let match;
       while ((match = regex.exec(fileContent)) !== null) {
-        currentSearchResults.push(match.index)
+        currentSearchResults.push(match.index);
       }
-      currentSearchResults.sort((a, b) => a - b)
+      currentSearchResults.sort((a, b) => a - b);
     }
     if (currentSearchResults.length > 0) {
       // Move to the previous index
-      currentSearchIndex = (currentSearchIndex - 1 + currentSearchResults.length) % currentSearchResults.length
-      let index = currentSearchResults[currentSearchIndex]
+      currentSearchIndex = (currentSearchIndex - 1 + currentSearchResults.length) % currentSearchResults.length;
+      let index = currentSearchResults[currentSearchIndex];
       // Select the text and scroll to it
-      editorTextarea.setSelectionRange(index, index + input.length)
-      editorTextarea.scrollTop = editorTextarea.scrollHeight * (index / editorTextarea.value.length)
+      editorTextarea.setSelectionRange(index, index + input.length);
+      editorTextarea.focus(); // Added focus to ensure highlighting works
+      editorTextarea.scrollTop = editorTextarea.scrollHeight * (index / editorTextarea.value.length);
       // Highlight the search results
-      highlightSearchResults()
+      highlightSearchResults();
     }
   }
 }
 
 // Replace the current occurrence of the input text with the replace text
 function replace() {
-  let input = findInput.value
-  let replaceText = replaceInput.value
+  let input = findInput.value;
+  let replaceText = replaceInput.value;
   if (input && replaceText) {
     if (currentSearchResults.length > 0 && currentSearchIndex >= 0) {
       // Get the current index and the file content
-      let index = currentSearchResults[currentSearchIndex]
-      let fileContent = editorTextarea.value
+      let index = currentSearchResults[currentSearchIndex];
+      let fileContent = editorTextarea.value;
       // Replace the input text with the replace text
-      fileContent = fileContent.slice(0, index) + replaceText + fileContent.slice(index + input.length)
-      editorTextarea.value = fileContent
+      fileContent = fileContent.slice(0, index) + replaceText + fileContent.slice(index + input.length);
+      editorTextarea.value = fileContent;
       // Update the current file content and the changes status
-      currentFileContent = fileContent
-      updateChanges()
+      currentFileContent = fileContent;
+      updateChanges();
       // Reset the search results and the search index
-      resetSearch()
+      resetSearch();
     }
   }
 }
 
 // Replace all the occurrences of the input text with the replace text
 function replaceAll() {
-  let input = findInput.value
-  let replaceText = replaceInput.value
+  let input = findInput.value;
+  let replaceText = replaceInput.value;
   if (input && replaceText) {
     if (currentSearchResults.length > 0) {
       // Get the file content
-      let fileContent = editorTextarea.value
+      let fileContent = editorTextarea.value;
       // Replace all the input text with the replace text
-      fileContent = fileContent.replace(new RegExp(input, 'g'), replaceText)
-      editorTextarea.value = fileContent
+      fileContent = fileContent.split(input).join(replaceText); // Use split and join for global replacement
+      editorTextarea.value = fileContent;
       // Update the current file content and the changes status
-      currentFileContent = fileContent
-      updateChanges()
+      currentFileContent = fileContent;
+      updateChanges();
       // Reset the search results and the search index
-      resetSearch()
+      resetSearch();
     }
   }
 }
