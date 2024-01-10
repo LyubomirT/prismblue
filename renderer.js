@@ -251,9 +251,9 @@ function togglePanel(panel) {
 function updateChanges() {
   let fileContent = editorTextarea.value
   if (fileContent === currentFileContent) {
-    changes.textContent = 'Saved'
+    changes.textContent = 'Saved Changes'
   } else {
-    changes.textContent = 'Unsaved'
+    changes.textContent = 'Unsaved Changes'
   }
 }
 
