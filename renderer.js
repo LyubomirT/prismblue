@@ -1,5 +1,6 @@
 // Modules to communicate with main process
 const { ipcRenderer, remote } = require('electron')
+const fs = require('fs')
 
 // Get the DOM elements
 const fileButton = document.getElementById('file-button')
@@ -42,10 +43,14 @@ const historyButton = document.getElementById('history-button')
 const historyPanel = document.getElementById('history-panel')
 const undoButton = document.getElementById('undo-button')
 const redoButton = document.getElementById('redo-button')
+const restoreButton = document.getElementById('restore-button')
+const restoreModal = document.getElementById('restore-modal')
+const restoreAlreadyThere = document.getElementById('restore-already-there')
+const failedRestore = document.getElementById('failed-restore')
+
 
 // Initialize the action history and redo stack
-let actionHistory = [];
-let redoStack = [];
+let lastSession = {}
 
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
@@ -167,6 +172,10 @@ newButton.addEventListener('click', () => {
   startBlank()
 })
 
+restoreButton.addEventListener('click', () => {
+  openModal(restoreModal)
+})
+
 // Add event listeners to the modals
 findModal.addEventListener('mousedown', (event) => {
   if (event.target.classList.contains('modal')) {
@@ -234,6 +243,35 @@ applyFontButton.addEventListener('click', () => {
   applyFont()
 })
 
+restoreModal.querySelector('.close-button').addEventListener('click', () => {
+  closeModal(restoreModal)
+})
+
+restoreModal.querySelector('#yes-restore-button').addEventListener('click', () => {
+  loadHistory()
+  closeModal(restoreModal)
+})
+
+restoreModal.querySelector('#no-restore-button').addEventListener('click', () => {
+  closeModal(restoreModal)
+})
+
+restoreAlreadyThere.querySelector('.close-button').addEventListener('click', () => {
+  closeModal(restoreAlreadyThere)
+})
+
+restoreAlreadyThere.querySelector('#ok-restore-button').addEventListener('click', () => {
+  closeModal(restoreAlreadyThere)
+})
+
+failedRestore.querySelector('.close-button').addEventListener('click', () => {
+  closeModal(failedRestore)
+})
+
+failedRestore.querySelector('#ok-failed-restore-button').addEventListener('click', () => {
+  closeModal(failedRestore)
+})
+
 // Handle the file-opened event from the main process
 ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
   currentFilePath = fileName
@@ -244,8 +282,6 @@ ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
   updateTotalSize()
   updateRowCol()
   resetSearch()
-  actionHistory = []
-  redoStack = []
 })
 
 // Handle the file-save event from the main process
@@ -547,36 +583,65 @@ function startBlank() {
   updateTotalSize()
   updateRowCol()
   resetSearch()
-  actionHistory = []
-  redoStack = []
 }
 
 // Function to add the current state to the action history
 function addToHistory() {
   // If the current state is the same as the last state, then don't add it to the history
-  if (actionHistory.length > 0) {
-    let lastState = actionHistory[actionHistory.length - 1];
-    if (
-      lastState.filePath === currentFilePath &&
-      lastState.fileContent === editorTextarea.value &&
-      lastState.scrollTop === editorTextarea.scrollTop
-    ) {
-      return;
-    }
+  lastSession = {
+    content: editorTextarea.value,
+    selectionStart: editorTextarea.selectionStart,
+    selectionEnd: editorTextarea.selectionEnd,
+    filePath: currentFilePath
   }
-  let state = {
-    filePath: currentFilePath,
-    fileContent: editorTextarea.value,
-    scrollTop: editorTextarea.scrollTop
-  };
-  actionHistory.push(state);
 
-  // Clear the redo stack when a new action is added
-  redoStack = [];
+  if (lastSession.content === currentFileContent) {
+    return
+  }
 
-  // Trim the history to prevent it from getting too big
-  if (actionHistory.length > 5000) {
-    actionHistory.shift();
+  if (lastSession.filePath === null || lastSession.filePath === undefined || lastSession.filePath === '') {
+    lastSession.filePath = 'Untitled'
+  }
+
+  // Save that to "session.json"
+  fs.writeFileSync('session.json', JSON.stringify(lastSession))
+}
+
+function loadHistory(){
+  let lastSession = {}
+  try {
+    // Load the last session from "session.json"
+    lastSession = JSON.parse(fs.readFileSync('session.json', 'utf8'))
+  } catch (err) {
+    console.log(err)
+    openModal(failedRestore)
+    return;
+  }
+
+  // If the last session is the same as the current session, then don't load it
+  if (lastSession.content === editorTextarea.value) {
+    openModal(restoreAlreadyThere)
+    return
+  }
+
+  try {
+      // If the last session is not null, then load it
+      if (lastSession) {
+        currentFilePath = lastSession.filePath
+        currentFileContent = lastSession.content
+        editorTextarea.value = lastSession.content
+        filename.textContent = lastSession.filePath
+        changes.textContent = 'File Opened'
+        updateTotalSize()
+        updateRowCol()
+        resetSearch()
+      } else {
+        console.log('No last session found')
+      }
+  } catch (err) {
+    console.log(err)
+    openModal(failedRestore)
+    return;
   }
 }
 

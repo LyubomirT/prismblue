@@ -36,7 +36,7 @@
     <div id="history-panel" class="sub-panel">
       <div class="sub-button" id="undo-button"><i class="fas fa-undo"></i> Undo</div>
       <div class="sub-button" id="redo-button"><i class="fas fa-redo"></i> Redo</div>
-      <div class="sub-button" id="revert-button"><i class="fas fa-history"></i> Revert</div>
+      <div class="sub-button" id="restore-button"><i class="fas fa-history"></i> Restore</div>
     </div>
   </div>
   <div id="editor">
@@ -76,6 +76,30 @@
       <button id="apply-font-button">Apply</button>
     </div>
   </div>
+  <div id="restore-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">×</span>
+      <h3>Restore Session</h3>
+      <p>Do you want to restore the last session?</p>
+      <button id="yes-restore-button">Yes</button>
+      <button id="no-restore-button">No</button>
+    </div>
+  </div>
+  <div id="restore-already-there" class="modal">
+    <div class="modal-content">
+      <span class="close-button">×</span>
+      <h3>Already Open</h3>
+      <p>Your last saved session is already open and there is no need to restore it.</p>
+      <button id="ok-restore-button">Okay</button>
+    </div>
+  </div>
+  <div id="failed-restore" class="modal">
+    <div class="modal-content">
+      <span class="close-button">×</span>
+      <h3>Failed to Restore</h3>
+      <p>Failed to restore the last session. Check the console for more details.</p>
+      <button id="ok-failed-restore-button">Okay</button>
+    </div>
   <script src="renderer.js"></script>
 </body>
 </html>
