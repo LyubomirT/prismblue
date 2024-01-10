@@ -391,24 +391,24 @@ function replace() {
 }
 
 // Replace all the occurrences of the input text with the replace text
+// HOLY **** ALL THIS TIME THERE WAS A REPLACEALL IN JS?!!
 function replaceAll() {
   let input = findInput.value;
   let replaceText = replaceInput.value;
   if (input && replaceText) {
-    if (currentSearchResults.length > 0) {
-      // Get the file content
-      let fileContent = editorTextarea.value;
-      // Replace all the input text with the replace text
-      fileContent = fileContent.split(input).join(replaceText); // Use split and join for global replacement
-      editorTextarea.value = fileContent;
-      // Update the current file content and the changes status
-      currentFileContent = fileContent;
-      updateChanges();
-      // Reset the search results and the search index
-      resetSearch();
-    }
+    // Get the file content
+    let fileContent = editorTextarea.value;
+    // Replace all the input text with the replace text
+    fileContent = fileContent.replaceAll(input, replaceText); // Use replaceAll method
+    editorTextarea.value = fileContent;
+    // Update the current file content and the changes status
+    currentFileContent = fileContent;
+    updateChanges();
+    // Reset the search results and the search index
+    resetSearch();
   }
 }
+
 
 // Reset the search results and the search index
 function resetSearch() {
