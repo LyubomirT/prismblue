@@ -40,6 +40,12 @@ const applyFontButton = document.getElementById('apply-font-button')
 const newButton = document.getElementById('new-button')
 const historyButton = document.getElementById('history-button')
 const historyPanel = document.getElementById('history-panel')
+const undoButton = document.getElementById('undo-button')
+const redoButton = document.getElementById('redo-button')
+
+// Initialize the action history and redo stack
+let actionHistory = [];
+let redoStack = [];
 
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
@@ -238,6 +244,8 @@ ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
   updateTotalSize()
   updateRowCol()
   resetSearch()
+  actionHistory = []
+  redoStack = []
 })
 
 // Handle the file-save event from the main process
@@ -516,7 +524,6 @@ function highlightSearchResults() {
 }
 
 document.addEventListener('keydown', (event) => {
-  console.log('Ctrl:', event.ctrlKey, 'Code:', event.code, 'Shift:', event.shiftKey);
 
   if (event.ctrlKey && event.code === 'KeyS') {
     if (event.shiftKey) {
@@ -540,4 +547,52 @@ function startBlank() {
   updateTotalSize()
   updateRowCol()
   resetSearch()
+  actionHistory = []
+  redoStack = []
 }
+
+// Function to add the current state to the action history
+function addToHistory() {
+  // If the current state is the same as the last state, then don't add it to the history
+  if (actionHistory.length > 0) {
+    let lastState = actionHistory[actionHistory.length - 1];
+    if (
+      lastState.filePath === currentFilePath &&
+      lastState.fileContent === editorTextarea.value &&
+      lastState.scrollTop === editorTextarea.scrollTop
+    ) {
+      return;
+    }
+  }
+  let state = {
+    filePath: currentFilePath,
+    fileContent: editorTextarea.value,
+    scrollTop: editorTextarea.scrollTop
+  };
+  actionHistory.push(state);
+
+  // Clear the redo stack when a new action is added
+  redoStack = [];
+
+  // Trim the history to prevent it from getting too big
+  if (actionHistory.length > 5000) {
+    actionHistory.shift();
+  }
+}
+
+// Whenever the value of the editor textarea changes, add the current state to the action history
+editorTextarea.addEventListener('keyup', addToHistory);
+
+function undo() {
+  document.execCommand('undo');
+}
+
+function redo() {
+  document.execCommand('redo');
+}
+
+// Handle the undo button click event
+undoButton.addEventListener('click', undo);
+
+// Handle the redo button click event
+redoButton.addEventListener('click', redo);
