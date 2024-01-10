@@ -52,6 +52,25 @@ const failedRestore = document.getElementById('failed-restore')
 // Initialize the action history and redo stack
 let lastSession = {}
 
+let preferences = {
+  theme: 'light',
+  font: 'Courier New',
+  fontSize: 16,
+  statusBar: true
+}
+
+function savePreferences() {
+  fs.writeFileSync('preferences.json', JSON.stringify(preferences))
+}
+
+function loadPreferences() {
+  try {
+    preferences = JSON.parse(fs.readFileSync('preferences.json', 'utf8'))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
 let currentFileContent = '' // The content of the current file
