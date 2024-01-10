@@ -205,7 +205,7 @@ ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
   currentFileContent = fileContent
   editorTextarea.value = fileContent
   filename.textContent = fileName
-  changes.textContent = 'Saved'
+  changes.textContent = 'File Opened'
   updateTotalSize()
   updateRowCol()
   resetSearch()
@@ -217,7 +217,7 @@ ipcRenderer.on('file-save', (event) => {
     let fileContent = editorTextarea.value
     ipcRenderer.send('file-content', currentFilePath, fileContent)
     currentFileContent = fileContent
-    changes.textContent = 'Saved'
+    changes.textContent = 'File Saved'
     resetSearch()
   } else {
     ipcRenderer.send('message', 'save-as')
@@ -231,7 +231,7 @@ ipcRenderer.on('file-save-as', (event, filePath) => {
   ipcRenderer.send('file-content', filePath, fileContent)
   currentFileContent = fileContent
   filename.textContent = filePath
-  changes.textContent = 'Saved'
+  changes.textContent = 'File Ready'
   resetSearch()
 })
 
@@ -485,3 +485,16 @@ function highlightSearchResults() {
     editorTextarea.style.backgroundImage = 'none'
   }
 }
+
+
+// Ctrl+S to save OR Cmd+S to save. Means Ctrl+Shift+S to save as OR Cmd+Shift+S to save as
+document.addEventListener('keydown', (event) => {
+  if (event.ctrlKey && event.key === 's') {
+    if (event.shiftKey) {
+      ipcRenderer.send('message', 'save-as')
+    } else {
+      ipcRenderer.send('message', 'save')
+    }
+    event.preventDefault()
+  }
+})
