@@ -313,18 +313,18 @@ function closeModal(modal) {
 function toggleTheme() {
   if (currentTheme === 'light') {
     currentTheme = 'dark'
-    document.body.style.backgroundColor = '#333'
-    document.body.style.color = '#eee'
-    editorTextarea.style.backgroundColor = '#222'
-    editorTextarea.style.color = '#eee'
+    // For every single element in the DOM, change the theme attribute
+    // to "dark" and change the toggle theme button text
+    for (let element of document.querySelectorAll('*')) {
+      element.setAttribute('theme', 'dark')
+    }
     toggleThemeButton.innerHTML = '<i class="fas fa-adjust"></i> Toggle Theme (Dark)'
   } else {
-    currentTheme = 'light'
-    document.body.style.backgroundColor = '#fff'
-    document.body.style.color = '#333'
-    editorTextarea.style.backgroundColor = '#fff'
-    editorTextarea.style.color = '#333'
+    for (let element of document.querySelectorAll('*')) {
+      element.setAttribute('theme', 'light')
+    }
     toggleThemeButton.innerHTML = '<i class="fas fa-adjust"></i> Toggle Theme (Light)'
+    currentTheme = 'light'
   }
 }
 
