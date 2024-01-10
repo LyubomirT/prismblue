@@ -1,13 +1,27 @@
+::-webkit-scrollbar { width: 12px; height: 12px; }
+
+::-webkit-scrollbar-button { background-color: #666; }
+
+::-webkit-scrollbar-track { background-color: #999; }
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+body {
+  overflow: hidden;
+}
+
 body[theme="dark"] {
   background-color: #222222;
   color: #fff;
 }
+
+
 
 :not(input):not(textarea),
 :not(input):not(textarea)::after,
@@ -73,7 +87,7 @@ body[theme="dark"] {
 }
 
 .sub-button[theme="dark"] {
-  color: #fff;
+  color: #dfdfdf;
 }
 
 .sub-button:hover {
@@ -104,6 +118,54 @@ body[theme="dark"] {
   padding: 10px;
 }
 
+#editor-textarea::--webkit-scrollbar {
+  width: 3px;
+}
+
+#editor-textarea::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+#editor-textarea::-webkit-scrollbar-thumb {
+  background: #ccc;
+  width: 3px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+#editor-textarea::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+#editor-textarea[theme="dark"]::-webkit-scrollbar-track {
+  background: #505050;
+}
+
+#editor-textarea[theme="dark"]::-webkit-scrollbar-thumb {
+  background: #333;
+}
+
+#editor-textarea[theme="dark"]::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#editor-textarea::--webkit-resizer {
+  background: #eee;
+}
+
+#editor-textarea[theme="dark"]::--webkit-resizer {
+  background: #505050;
+}
+
+#editor-textarea::--webkit-scrollbar-corner {
+  background: #eee;
+}
+
+#editor-textarea[theme="dark"]::--webkit-scrollbar-corner {
+  background: #505050;
+}
+
+
 #editor-textarea[theme="dark"] {
   background-color: #222222;
   color: #fff;
@@ -113,7 +175,7 @@ body[theme="dark"] {
   display: flex;
   position: absolute;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background-color: #eee;
   height: 30px;
   bottom: 0;
@@ -132,8 +194,8 @@ body[theme="dark"] {
   color: #333;
   font-family: Arial, sans-serif;
   font-size: 14px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 #status-bar[theme="dark"] div {
