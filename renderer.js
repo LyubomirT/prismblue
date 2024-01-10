@@ -231,6 +231,8 @@ restoreButton.addEventListener('click', () => {
   openModal(restoreModal)
 })
 
+fileButton.click()
+
 // Add event listeners to the modals
 findModal.addEventListener('mousedown', (event) => {
   if (event.target.classList.contains('modal')) {
