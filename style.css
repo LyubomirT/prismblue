@@ -60,7 +60,7 @@
 
 #editor-textarea {
   width: 100%;
-  height: 95%;
+  height: 98%;
   border: none;
   resize: none;
   outline: none;
@@ -71,18 +71,23 @@
 
 #status-bar {
   display: flex;
+  position: absolute;
   align-items: center;
   justify-content: space-between;
   background-color: #eee;
   height: 30px;
+  bottom: 0;
+  width: 100%;
   border-top: 1px solid #ccc;
+  z-index: 3;
 }
 
 #status-bar div {
   color: #333;
   font-family: Arial, sans-serif;
   font-size: 14px;
-  padding: 5px 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .modal {
