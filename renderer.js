@@ -276,14 +276,14 @@ function toggleTheme() {
     document.body.style.color = '#eee'
     editorTextarea.style.backgroundColor = '#222'
     editorTextarea.style.color = '#eee'
-    toggleThemeButton.textContent = 'Toggle Theme (Dark)'
+    toggleThemeButton.innerHTML = '<i class="fas fa-adjust"></i> Toggle Theme (Dark)'
   } else {
     currentTheme = 'light'
     document.body.style.backgroundColor = '#fff'
     document.body.style.color = '#333'
     editorTextarea.style.backgroundColor = '#fff'
     editorTextarea.style.color = '#333'
-    toggleThemeButton.textContent = 'Toggle Theme (Light)'
+    toggleThemeButton.innerHTML = '<i class="fas fa-adjust"></i> Toggle Theme (Light)'
   }
 }
 
@@ -293,12 +293,12 @@ function toggleStatusBar() {
     currentStatusBar = false
     statusBar.style.display = 'none'
     editor.style.height = 'calc(100vh - 41px)'
-    toggleStatusBarButton.textContent = 'Toggle Status Bar (Off)'
+    toggleStatusBarButton.innerHTML = '<i class="fas fa-info-circle"></i> Toggle Status Bar (Off)'
   } else {
     currentStatusBar = true
     statusBar.style.display = 'flex'
     editor.style.height = 'calc(100vh - 71px)'
-    toggleStatusBarButton.textContent = 'Toggle Status Bar (On)'
+    toggleStatusBarButton.innerHTML = '<i class="fas fa-info-circle"></i> Toggle Status Bar (On)'
   }
 }
 
