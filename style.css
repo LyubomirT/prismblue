@@ -57,6 +57,13 @@ i {
   min-height: 30px; /* Set a minimum height to visually occupy space */
 }
 
+#menu-bar img {
+  -webkit-app-region: drag;
+  height: 15px;
+  margin-left: 10px;
+  margin-right: 7px;
+}
+
 
 .menu-button {
   color: white;
