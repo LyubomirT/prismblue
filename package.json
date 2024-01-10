@@ -1,21 +1,21 @@
 {
-  "name": "prismblue-code",
-  "version": "0.0.1",
-  "description": "This is a simple yet powerful code editor that works on any OS and helps you write code easier!",
+  "name": "prismblue",
+  "version": "0.9.5",
+  "description": "This is a simple yet powerful text editor that works on any OS and helps you write text easier!",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LyubomirT/prismblue-code.git"
+    "url": "git+https://github.com/LyubomirT/prismblue.git"
   },
   "author": "LyubomirT",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/LyubomirT/prismblue-code/issues"
+    "url": "https://github.com/LyubomirT/prismblue/issues"
   },
-  "homepage": "https://github.com/LyubomirT/prismblue-code#readme",
+  "homepage": "https://github.com/LyubomirT/prismblue#readme",
   "dependencies": {
     "@electron/remote": "^2.1.1",
     "codemirror": "^6.0.1",
