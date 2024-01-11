@@ -18,8 +18,6 @@
   "homepage": "https://github.com/LyubomirT/prismblue#readme",
   "dependencies": {
     "@electron/remote": "^2.1.1",
-    "codemirror": "^6.0.1",
-    "electron": "^28.1.0",
-    "prettier": "^2.2.1"
+    "electron": "^28.1.0"
   }
 }
