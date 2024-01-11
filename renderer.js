@@ -57,6 +57,7 @@ const runButton = document.getElementById('run-button')
 const unsavedFile = document.getElementById('file-not-saved')
 const unsupportedLanguage = document.getElementById('unsupported-language')
 const previewMDorHTML = document.getElementById('preview-button')
+const toggleFullScreenButton = document.getElementById('toggle-fullscreen-button')
 
 let maximized = false
 
@@ -550,6 +551,14 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
 
+function toggleFullScreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen()
+  } else {
+    document.documentElement.requestFullscreen()
+  }
+}
+
 // Open a modal
 function openModal(modal) {
   modal.style.display = 'block'
@@ -907,4 +916,8 @@ previewMDorHTML.addEventListener('click', () => {
     openModal(unsupportedLanguage)
     return
   }
+})
+
+toggleFullScreenButton.addEventListener('click', () => {
+  toggleFullScreen()
 })
