@@ -53,8 +53,9 @@ i {
 .draggable {
   -webkit-app-region: drag;
   cursor: move;
-  flex-grow: 1; /* Use flex-grow to fill the remaining space */
-  min-height: 30px; /* Set a minimum height to visually occupy space */
+  position: relative; /* Change to relative positioning */
+  flex-grow: 1;
+  min-height: 30px;
   color: white;
   font-size: 12px;
   align-items: center;
@@ -62,6 +63,16 @@ i {
   justify-content: center;
   font-weight: 500;
 }
+
+.draggable p {
+  display: inline-block;
+  position: absolute; /* Change to absolute positioning */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Center using translate */
+  margin: 0; /* Remove default margin */
+}
+
 
 #menu-bar img {
   -webkit-app-region: drag;
