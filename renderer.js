@@ -51,6 +51,8 @@ const close_Button = document.getElementById('close_-button')
 const minimizeButton = document.getElementById('mini-button')
 const maximizeButton = document.getElementById('maxi-button')
 const title = document.getElementById('title')
+const runMenuButton = document.getElementById('run-menu-button')
+const runMenu = document.getElementById('run-panel')
 
 let maximized = false
 
@@ -126,6 +128,7 @@ fileButton.addEventListener('click', () => {
   editButton.removeAttribute('state')
   viewButton.removeAttribute('state')
   historyButton.removeAttribute('state')
+  runMenuButton.removeAttribute('state')
 })
 
 editButton.addEventListener('click', () => {
@@ -134,6 +137,7 @@ editButton.addEventListener('click', () => {
   editButton.setAttribute('state', 'active')
   viewButton.removeAttribute('state')
   historyButton.removeAttribute('state')
+  runMenuButton.removeAttribute('state')
 })
 
 viewButton.addEventListener('click', () => {
@@ -142,6 +146,7 @@ viewButton.addEventListener('click', () => {
   editButton.removeAttribute('state')
   viewButton.setAttribute('state', 'active')
   historyButton.removeAttribute('state')
+  runMenuButton.removeAttribute('state')
 })
 
 historyButton.addEventListener('click', () => {
@@ -150,6 +155,16 @@ historyButton.addEventListener('click', () => {
   editButton.removeAttribute('state')
   viewButton.removeAttribute('state')
   historyButton.setAttribute('state', 'active')
+  runMenuButton.removeAttribute('state')
+})
+
+runMenuButton.addEventListener('click', () => {
+  togglePanel(runMenu)
+  fileButton.removeAttribute('state')
+  editButton.removeAttribute('state')
+  viewButton.removeAttribute('state')
+  historyButton.removeAttribute('state')
+  runMenuButton.setAttribute('state', 'active')
 })
 
 // Add event listeners to the sub buttons
