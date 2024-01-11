@@ -87,7 +87,13 @@ ipcMain.on('message', (event, arg) => {
       mainWindow.unmaximize()
       break
     default:
-      console.log('Unknown message: ' + arg)
+      // If contains "run-py|||path/to/file.py", run the python script
+      if (arg.includes('run-py|||')) {
+        let command = arg.split('|||')[1]
+        command = "python " + command
+      } else {
+        console.log('Unknown message: ' + arg)
+      }
   }
 })
 
@@ -143,3 +149,20 @@ ipcMain.on('file-content', (event, filePath, fileContent) => {
     }
   })
 })
+
+function openPowerShellAndRunCommand(command) {
+  const { spawn } = require('child_process');
+  const bat = spawn('cmd.exe', ['/c', command]);
+
+  bat.stdout.on('data', (data) => {
+    console.log(data.toString());
+  });
+
+  bat.stderr.on('data', (data) => {
+    console.error(data.toString());
+  });
+
+  bat.on('exit', (code) => {
+    console.log(`Child exited with code ${code}`);
+  });
+}
