@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, Menu, MenuItem } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
@@ -93,7 +93,16 @@ ipcMain.on('message', (event, arg) => {
         let command = arg.split('|||')[1]
         command = "python " + command
         openPowerShellAndRunCommand(command)
-      } else {
+      } else if (arg.includes('run-node|||')) {
+        let command = arg.split('|||')[1]
+        command = "node " + command
+        openPowerShellAndRunCommand(command)
+      } else if (arg.includes('run-ruby|||')) {
+        let command = arg.split('|||')[1]
+        command = "ruby " + command
+        openPowerShellAndRunCommand(command)
+      }
+      else {
         console.log('Unknown message: ' + arg)
       }
   }
@@ -171,3 +180,96 @@ function openPowerShellAndRunCommand(command) {
   });
 }
 
+async function tempWindow(htmlstring) {
+  let tempWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false // This is the default value anyway
+    },
+    icon: path.join(__dirname, 'brand/PBC_LOGO.ico')
+    
+  })
+
+  var template = [
+    {
+      label: "Tools",
+      submenu: [
+        {
+          label: "Reload",
+          accelerator: "CmdOrCtrl+R",
+          click: function (item, focusedWindow) {
+            if (focusedWindow) {
+              // on reload, start fresh and close any old
+              // open secondary windows
+              if (focusedWindow.id === 1) {
+                BrowserWindow.getAllWindows().forEach(function (win) {
+                  if (win.id > 1) {
+                    win.close()
+                  }
+                })
+              }
+              focusedWindow.reload()
+            }
+          }
+        },
+        {
+          label: "Toggle Full Screen",
+          accelerator: (function () {
+            if (process.platform === "darwin") {
+              return "Ctrl+Command+F"
+            } else {
+              return "F11"
+            }
+          })(),
+          click: function (item, focusedWindow) {
+            if (focusedWindow) {
+              focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
+            }
+          }
+        },
+        {
+          label: "Toggle Developer Tools",
+          accelerator: (function () {
+            if (process.platform === "darwin") {
+              return "Alt+Command+I"
+            } else {
+              return "Ctrl+Shift+I"
+            }
+          })(),
+          click: function (item, focusedWindow) {
+            if (focusedWindow) {
+              focusedWindow.toggleDevTools()
+            }
+          }
+        },
+        {
+          label: "Quit",
+          accelerator: "CmdOrCtrl+Q",
+          click: function () {
+            // Only close the temp window
+            tempWindow.close()
+          }
+        }
+      ]
+    }
+  ]
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+
+  // Save the htmlstring to a temp file
+  fs.writeFileSync('temp.html', htmlstring)
+
+  // Load the temp file
+  tempWindow.loadFile('temp.html')
+
+  tempWindow.on('closed', function () {
+    tempWindow = null
+  })
+}
+
+// previewinwindow event, must run in async mode
+ipcMain.on('previewinwindow', async (event, htmlstring) => {
+  tempWindow(htmlstring)
+})

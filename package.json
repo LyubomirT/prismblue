@@ -1,6 +1,6 @@
 {
   "name": "prismblue",
-  "version": "0.9.5",
+  "version": "0.9.9",
   "description": "This is a simple yet powerful text editor that works on any OS and helps you write text easier!",
   "main": "main.js",
   "scripts": {

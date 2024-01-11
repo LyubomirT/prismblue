@@ -56,6 +56,7 @@ const runMenu = document.getElementById('run-panel')
 const runButton = document.getElementById('run-button')
 const unsavedFile = document.getElementById('file-not-saved')
 const unsupportedLanguage = document.getElementById('unsupported-language')
+const previewMDorHTML = document.getElementById('preview-button')
 
 let maximized = false
 
@@ -865,13 +866,13 @@ undoButton.addEventListener('click', undo);
 redoButton.addEventListener('click', redo);
 
 runButton.addEventListener('click', () => {
-  // For now we only support python
+  // For now we only support python, node, and ruby
   // Check if the file is saved
   if (currentFilePath === null) {
     openModal(unsavedFile)
     return
   }
-  if (currentFilePath.split('.').pop() !== 'py') {
+  if (currentFilePath.split('.').pop() !== 'py' && currentFilePath.split('.').pop() !== 'js' && currentFilePath.split('.').pop() !== 'rb') {
     openModal(unsupportedLanguage)
     return
   }
@@ -879,7 +880,31 @@ runButton.addEventListener('click', () => {
     openModal(unsavedFile)
     return
   }
-  // Run the python script
-  ipcRenderer.send('message', 'run-py|||' + currentFilePath)
+  if (currentFilePath.split('.').pop() === 'py') {
+    ipcRenderer.send('message', 'run-py|||' + currentFilePath)
+  } else if (currentFilePath.split('.').pop() === 'js') {
+    ipcRenderer.send('message', 'run-node|||' + currentFilePath)
+  } else if (currentFilePath.split('.').pop() === 'rb') {
+    ipcRenderer.send('message', 'run-ruby|||' + currentFilePath)
+  }
 }
 );
+
+previewMDorHTML.addEventListener('click', () => {
+  if (currentFilePath === null) {
+    openModal(unsavedFile)
+    return
+  }
+  if (changes.textContent === 'Unsaved Changes') {
+    openModal(unsavedFile)
+    return
+  }
+  if (currentFilePath.split('.').pop() === 'md') {
+    ipcRenderer.send('previewinwindow', applyMDTemplate(editorTextarea.value))
+  } else if (currentFilePath.split('.').pop() === 'html') {
+    ipcRenderer.send('previewinwindow', applyHTMLTemplate(editorTextarea.value))
+  } else {
+    openModal(unsupportedLanguage)
+    return
+  }
+})
