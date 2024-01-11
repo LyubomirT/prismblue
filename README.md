@@ -1,4 +1,4 @@
-# Prismblue
+![Prismblue Logo](brand/pbbanner.png)
 
 Welcome to the Prismblue repository! It's a simple text editor with a neat UI and some cool features which doesn't consume much! It's written in pure JavaScript and uses the [Electron](https://www.electronjs.org/) framework. Prismblue is open-source and is licensed under the [GPL-3.0 License](LICENSE), available for Windows, macOS, and Linux.
 
@@ -14,7 +14,7 @@ The Prismblue text editor offers the following features:
 
 ## Installation
 
-## Classic (Windows)
+### Classic (Windows)
 
 This installation method is for Windows users who want to install Prismblue as a typical desktop application (portable installation).
 
@@ -23,7 +23,7 @@ This installation method is for Windows users who want to install Prismblue as a
 3. Run the `Prismblue.exe` file.
 4. You're done! Now Prismblue should be running and you should see the main window.
 
-## Git (Windows, macOS, Linux)
+### Git (Windows, macOS, Linux)
 
 If you don't want to download a release, you can clone the repository and run Prismblue from the source code (or build it yourself).
 
