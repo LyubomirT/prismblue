@@ -448,13 +448,22 @@ unsavedFile.querySelector('.close-button').addEventListener('click', () => {
   closeModal(unsavedFile)
 })
 
-unsavedFile.querySelector('#ok-unsaved-file-button').addEventListener('click', () => {
+unsavedFile.querySelector('#ok-file-not-saved-button').addEventListener('click', () => {
   closeModal(unsavedFile)
 })
 
+unsupportedLanguage.querySelector('.close-button').addEventListener('click', () => {
+  closeModal(unsupportedLanguage)
+})
+
+unsupportedLanguage.querySelector('#ok-unsupported-language-button').addEventListener('click', () => {
+  closeModal(unsupportedLanguage)
+})
+
 // Handle the file-opened event from the main process
-ipcRenderer.on('file-opened', (event, fileName, fileContent) => {
-  currentFilePath = fileName
+ipcRenderer.on('file-opened', (event, fileName, fileContent, filePath) => {
+  // Currentfilepath must be a PATH, not a FILENAME. Use fs to get the path
+  currentFilePath = filePath
   currentFileContent = fileContent
   editorTextarea.value = fileContent
   filename.textContent = fileName

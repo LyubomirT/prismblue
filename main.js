@@ -87,10 +87,12 @@ ipcMain.on('message', (event, arg) => {
       mainWindow.unmaximize()
       break
     default:
+      console.log(arg)
       // If contains "run-py|||path/to/file.py", run the python script
       if (arg.includes('run-py|||')) {
         let command = arg.split('|||')[1]
         command = "python " + command
+        openPowerShellAndRunCommand(command)
       } else {
         console.log('Unknown message: ' + arg)
       }
@@ -110,7 +112,7 @@ function openFile() {
       let filePath = result.filePaths[0]
       let fileName = path.basename(filePath)
       let fileContent = fs.readFileSync(filePath, 'utf8')
-      mainWindow.webContents.send('file-opened', fileName, fileContent)
+      mainWindow.webContents.send('file-opened', fileName, fileContent, filePath)
     }
   }).catch(err => {
     console.log(err)
@@ -151,18 +153,21 @@ ipcMain.on('file-content', (event, filePath, fileContent) => {
 })
 
 function openPowerShellAndRunCommand(command) {
-  const { spawn } = require('child_process');
-  const bat = spawn('cmd.exe', ['/c', command]);
+  const { exec } = require('child_process');
+  const powershellCommand = `start powershell.exe -NoExit -Command "${command}"`;
 
-  bat.stdout.on('data', (data) => {
+  const powershellProcess = exec(powershellCommand);
+
+  powershellProcess.stdout.on('data', (data) => {
     console.log(data.toString());
   });
 
-  bat.stderr.on('data', (data) => {
+  powershellProcess.stderr.on('data', (data) => {
     console.error(data.toString());
   });
 
-  bat.on('exit', (code) => {
-    console.log(`Child exited with code ${code}`);
+  powershellProcess.on('exit', (code) => {
+    console.log(`PowerShell process exited with code ${code}`);
   });
 }
+
