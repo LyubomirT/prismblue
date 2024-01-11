@@ -53,6 +53,9 @@ const maximizeButton = document.getElementById('maxi-button')
 const title = document.getElementById('title')
 const runMenuButton = document.getElementById('run-menu-button')
 const runMenu = document.getElementById('run-panel')
+const runButton = document.getElementById('run-button')
+const unsavedFile = document.getElementById('file-not-saved')
+const unsupportedLanguage = document.getElementById('unsupported-language')
 
 let maximized = false
 
@@ -285,6 +288,103 @@ fontModal.addEventListener('mouseup', (event) => {
   }
 });
 
+restoreModal.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    restoreModal.initialClickX = event.clientX;
+    restoreModal.initialClickY = event.clientY;
+  }
+});
+
+restoreModal.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    restoreModal.initialClickX === event.clientX &&
+    restoreModal.initialClickY === event.clientY
+  ) {
+    closeModal(restoreModal);
+  }
+});
+
+restoreAlreadyThere.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    restoreAlreadyThere.initialClickX = event.clientX;
+    restoreAlreadyThere.initialClickY = event.clientY;
+  }
+}
+);
+
+restoreAlreadyThere.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    restoreAlreadyThere.initialClickX === event.clientX &&
+    restoreAlreadyThere.initialClickY === event.clientY
+  ) {
+    closeModal(restoreAlreadyThere);
+  }
+}
+);
+
+failedRestore.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    failedRestore.initialClickX = event.clientX;
+    failedRestore.initialClickY = event.clientY;
+  }
+}
+);
+
+failedRestore.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    failedRestore.initialClickX === event.clientX &&
+    failedRestore.initialClickY === event.clientY
+  ) {
+    closeModal(failedRestore);
+  }
+}
+);
+
+unsavedFile.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    unsavedFile.initialClickX = event.clientX;
+    unsavedFile.initialClickY = event.clientY;
+  }
+}
+);
+
+unsavedFile.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    unsavedFile.initialClickX === event.clientX &&
+    unsavedFile.initialClickY === event.clientY
+  ) {
+    closeModal(unsavedFile);
+  }
+}
+);
+
+unsupportedLanguage.addEventListener('mousedown', (event) => {
+  if (event.target.classList.contains('modal')) {
+    // Record the initial position of the click
+    unsupportedLanguage.initialClickX = event.clientX;
+    unsupportedLanguage.initialClickY = event.clientY;
+  }
+}
+);
+
+unsupportedLanguage.addEventListener('mouseup', (event) => {
+  if (
+    event.target.classList.contains('modal') &&
+    unsupportedLanguage.initialClickX === event.clientX &&
+    unsupportedLanguage.initialClickY === event.clientY
+  ) {
+    closeModal(unsupportedLanguage);
+  }
+});
+
 
 // Add event listeners to the modal buttons
 findModal.querySelector('.close-button').addEventListener('click', () => {
@@ -342,6 +442,14 @@ failedRestore.querySelector('.close-button').addEventListener('click', () => {
 
 failedRestore.querySelector('#ok-failed-restore-button').addEventListener('click', () => {
   closeModal(failedRestore)
+})
+
+unsavedFile.querySelector('.close-button').addEventListener('click', () => {
+  closeModal(unsavedFile)
+})
+
+unsavedFile.querySelector('#ok-unsaved-file-button').addEventListener('click', () => {
+  closeModal(unsavedFile)
 })
 
 // Handle the file-opened event from the main process
@@ -746,3 +854,23 @@ undoButton.addEventListener('click', undo);
 
 // Handle the redo button click event
 redoButton.addEventListener('click', redo);
+
+runButton.addEventListener('click', () => {
+  // For now we only support python
+  // Check if the file is saved
+  if (currentFilePath === null) {
+    openModal(unsavedFile)
+    return
+  }
+  if (currentFilePath.split('.').pop() !== 'py') {
+    openModal(unsupportedLanguage)
+    return
+  }
+  if (changes.textContent === 'Unsaved Changes') {
+    openModal(unsavedFile)
+    return
+  }
+  // Run the python script
+  ipcRenderer.send('message', 'run-py|||' + currentFilePath)
+}
+);
