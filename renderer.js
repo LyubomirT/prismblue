@@ -541,15 +541,6 @@ function updateRowCol() {
   rowCol.textContent = row + ':' + col
 }
 
-function toggleFullScreen() {
-  if (document.fullscreenElement) {
-    document.exitFullscreen()
-  } else {
-    document.documentElement.requestFullscreen()
-  }
-}
-
-
 
 // Toggle the theme
 function toggleTheme() {
