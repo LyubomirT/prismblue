@@ -2,6 +2,7 @@
   "name": "prismblue",
   "version": "1.0.0",
   "description": "This is a simple yet powerful text editor that works on any OS and helps you write text easier!",
+  "icon": "brand/PBC_LOGO.ico",
   "main": "main.js",
   "scripts": {
     "start": "electron ."

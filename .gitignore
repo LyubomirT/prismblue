@@ -3,3 +3,4 @@ package-lock.json
 session.json
 preferences.json
 temp.html
+build/
