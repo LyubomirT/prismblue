@@ -2,6 +2,7 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu, MenuItem } = require('electron')
 const path = require('path')
 const fs = require('fs')
+const { platform } = require('os')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -168,7 +169,16 @@ ipcMain.on('file-content', (event, filePath, fileContent) => {
 
 function openPowerShellAndRunCommand(command) {
   const { exec } = require('child_process');
-  const powershellCommand = `start powershell.exe -NoExit -Command "${command}"`;
+  if (platform() === 'darwin') {
+    command = `osascript -e 'tell application "Terminal" to do script "${command}"'`;
+  } else if (platform() === 'win32') {
+    command = `start powershell.exe -NoExit -Command "${command}"`;
+  } else if (platform() === 'linux') {
+    command = `gnome-terminal -- bash -c "${command}; exec bash"`;
+  } else {
+    console.log('Unknown platform: ' + platform());
+    return;
+  }
 
   const powershellProcess = exec(powershellCommand);
 
