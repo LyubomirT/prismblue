@@ -541,16 +541,6 @@ function updateRowCol() {
   rowCol.textContent = row + ':' + col
 }
 
-// Format bytes to human readable units
-function formatBytes(bytes) {
-  if (bytes === 0) return '0 bytes'
-  const k = 1024
-  const dm = 2
-  const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
-}
-
 function toggleFullScreen() {
   if (document.fullscreenElement) {
     document.exitFullscreen()
@@ -691,7 +681,7 @@ function replace() {
 }
 
 // Replace all the occurrences of the input text with the replace text
-// HOLY **** ALL THIS TIME THERE WAS A REPLACEALL IN JS?!!
+// HOLY, ALL THIS TIME THERE WAS A REPLACEALL IN JS?!!
 function replaceAll() {
   let input = findInput.value;
   let replaceText = replaceInput.value;
@@ -850,21 +840,21 @@ function loadHistory(){
 }
 
 // Whenever the value of the editor textarea changes, add the current state to the action history
-editorTextarea.addEventListener('keyup', addToHistory);
+editorTextarea.addEventListener('keyup', addToHistory)
 
 function undo() {
-  document.execCommand('undo');
+  document.execCommand('undo')
 }
 
 function redo() {
-  document.execCommand('redo');
+  document.execCommand('redo')
 }
 
 // Handle the undo button click event
-undoButton.addEventListener('click', undo);
+undoButton.addEventListener('click', undo)
 
 // Handle the redo button click event
-redoButton.addEventListener('click', redo);
+redoButton.addEventListener('click', redo)
 
 runButton.addEventListener('click', () => {
   // For now we only support python, node, and ruby
