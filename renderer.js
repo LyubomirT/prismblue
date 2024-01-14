@@ -754,6 +754,11 @@ document.addEventListener('keydown', (event) => {
     }
     event.preventDefault();
   }
+  if (event.ctrlKey && event.code === 'KeyO') {
+    console.log('Open');
+    ipcRenderer.send('message', 'open');
+    event.preventDefault();
+  }
 });
 
 
