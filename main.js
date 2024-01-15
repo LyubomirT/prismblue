@@ -7,6 +7,7 @@ const { platform } = require('os')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+// let isChangesSaved = false; // Default to true when the app starts
 
 function createWindow () {
   // Create the browser window.
@@ -81,7 +82,7 @@ ipcMain.on('message', (event, arg) => {
       saveFileAs()
       break
     case 'exit':
-      app.quit()
+      exitApp()
       break
     case 'minimize':
       mainWindow.minimize()
@@ -113,7 +114,10 @@ ipcMain.on('message', (event, arg) => {
       }
   }
 })
-
+// ipcMain.on('editor-content-changed', () => {
+//   // Editor content changed, set saved state to false
+//   isChangesSaved = false;
+// });
 // Open a file and send its content to the renderer process
 function openFile() {
   dialog.showOpenDialog(mainWindow, {
@@ -132,6 +136,61 @@ function openFile() {
   }).catch(err => {
     console.log(err)
   })
+}
+// exit application after user approves the options  are either save or discard or cancel
+// function exitApp() {
+//   const confirmSave = dialog.showMessageBoxSync(mainWindow, {
+//     type: 'question',
+//     buttons: ['Save', 'Discard', 'Cancel'],
+//     defaultId: 0,
+//     title: 'Save Changes',
+//     message: 'Do you want to save changes before exiting?',
+//   });
+//
+//   if (confirmSave === 0) {
+//     // User clicked "Save", trigger the save process
+//
+//     dialog.showSaveDialog(mainWindow, {
+//       filters: [
+//         { name: 'Text Files', extensions: ['txt'] },
+//         { name: 'All Files', extensions: ['*'] }
+//       ]
+//     }).then(result => {
+//       if (!result.canceled) {
+//         let filePath = result.filePath
+//         mainWindow.webContents.send('file-save-as', filePath)
+//         app.quit()
+//       }
+//     }).catch(err => {
+//       console.log(err)
+//     })
+//
+//   } else {
+//     // User clicked "Cancel", do nothing or handle accordingly
+//     console.log('Cancelled save');
+//   }
+//
+// }
+// exit application after user approves
+function exitApp() {
+  const confirmSave = dialog.showMessageBoxSync(mainWindow, {
+    type: 'question',
+    buttons: ['Yes', 'No'],
+    defaultId: 0,
+    title: 'Exit',
+    message: 'Are you sure you want to exit?',
+  });
+
+  if (confirmSave === 0) {
+    // User clicked "Yes", trigger the exit process
+
+        app.quit()
+
+  } else {
+    // User clicked "No", do nothing or handle accordingly
+    console.log('Cancelled exit');
+  }
+
 }
 
 // Save the current file
@@ -270,7 +329,13 @@ async function tempWindow(htmlstring) {
       ]
     }
   ]
-
+  // function notifyEditorContentChanged() {
+  //   ipcRenderer.send('editor-content-changed');
+  // }
+  // editor.on('change', () => {
+  //   // Notify the main process about the content change
+  //   notifyEditorContentChanged();
+  // });
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
   // Save the htmlstring to a temp file
