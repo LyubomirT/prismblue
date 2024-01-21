@@ -483,7 +483,8 @@ ipcRenderer.on('file-opened', (event, fileName, fileContent, filePath) => {
 ipcRenderer.on('file-save', (event) => {
     if (currentFilePath) {
         let fileContent = editorTextarea.value
-        ipcRenderer.send('file-content', currentFilePath, fileContent)
+        isChangesSaved=true;
+        ipcRenderer.send('file-content', currentFilePath, fileContent,isChangesSaved)
         currentFileContent = fileContent
         changes.textContent = 'File Saved'
         resetSearch()
@@ -508,7 +509,8 @@ ipcRenderer.on('file-save-and-exit', (event) => {
 ipcRenderer.on('file-save-as', (event, filePath) => {
     currentFilePath = filePath
     let fileContent = editorTextarea.value
-    ipcRenderer.send('file-content', filePath, fileContent)
+    isChangesSaved=true;
+    ipcRenderer.send('file-content', filePath, fileContent,isChangesSaved)
     currentFileContent = fileContent
     filename.textContent = filePath
     changes.textContent = 'File Ready'

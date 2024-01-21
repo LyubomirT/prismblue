@@ -209,12 +209,15 @@ function saveFileAsAndExit() {
 }
 
 // Receive the file content from the renderer process and write it to the file
-ipcMain.on('file-content', (event, filePath, fileContent) => {
+ipcMain.on('file-content', (event, filePath, fileContent,saved) => {
     fs.writeFile(filePath, fileContent, (err) => {
         if (err) {
             console.log(err)
         } else {
+            console.log(saved);
+            isChangesSaved=saved;
             console.log('File saved: ' + filePath)
+            console.log(isChangesSaved);
         }
     })
 })
