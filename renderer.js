@@ -58,6 +58,7 @@ const unsavedFile = document.getElementById('file-not-saved')
 const unsupportedLanguage = document.getElementById('unsupported-language')
 const previewMDorHTML = document.getElementById('preview-button')
 const toggleFullScreenButton = document.getElementById('toggle-fullscreen-button')
+const nothingFoundModal = document.getElementById('nothing-found')
 
 let maximized = false
 
@@ -388,6 +389,26 @@ unsupportedLanguage.addEventListener('mouseup', (event) => {
         closeModal(unsupportedLanguage);
     }
 });
+
+nothingFoundModal.addEventListener('mousedown', (event) => {
+        if (event.target.classList.contains('modal')) {
+            // Record the initial position of the click
+            nothingFoundModal.initialClickX = event.clientX;
+            nothingFoundModal.initialClickY = event.clientY;
+        }
+    }
+);
+
+nothingFoundModal.addEventListener('mouseup', (event) => {
+        if (
+            event.target.classList.contains('modal') &&
+            nothingFoundModal.initialClickX === event.clientX &&
+            nothingFoundModal.initialClickY === event.clientY
+        ) {
+            closeModal(nothingFoundModal);
+        }
+    }
+);
 
 
 // Add event listeners to the modal buttons
