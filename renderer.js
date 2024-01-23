@@ -485,6 +485,14 @@ unsupportedLanguage.querySelector('#ok-unsupported-language-button').addEventLis
     closeModal(unsupportedLanguage)
 })
 
+nothingFoundModal.querySelector('.close-button').addEventListener('click', () => {
+    closeModal(nothingFoundModal)
+})
+
+nothingFoundModal.querySelector('#ok-nothing-found-button').addEventListener('click', () => {
+    closeModal(nothingFoundModal)
+})
+
 // Handle the file-opened event from the main process
 ipcRenderer.on('file-opened', (event, fileName, fileContent, filePath) => {
     // Currentfilepath must be a PATH, not a FILENAME. Use fs to get the path
