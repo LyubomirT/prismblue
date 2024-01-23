@@ -656,6 +656,10 @@ function applyFont() {
 function findNext() {
     let input = findInput.value;
     if (input) {
+        if (!editorTextarea.value.includes(input)) {
+            openModal(nothingFoundModal)
+            return
+        }
         if (currentSearchResults.length === 0) {
             // First time search
             let fileContent = editorTextarea.value;
@@ -684,6 +688,10 @@ function findNext() {
 function findPrev() {
     let input = findInput.value;
     if (input) {
+        if (!editorTextarea.value.includes(input)) {
+            openModal(nothingFoundModal)
+            return
+        }
         if (currentSearchResults.length === 0) {
             // First time search
             let fileContent = editorTextarea.value;
@@ -713,6 +721,10 @@ function replace() {
     let input = findInput.value;
     let replaceText = replaceInput.value;
     if (input) {
+        if (!editorTextarea.value.includes(input)) {
+            openModal(nothingFoundModal)
+            return
+        }
         if (currentSearchResults.length > 0 && currentSearchIndex >= 0) {
             // Get the current index and the file content
             let index = currentSearchResults[currentSearchIndex];
@@ -735,6 +747,10 @@ function replaceAll() {
     let input = findInput.value;
     let replaceText = replaceInput.value;
     if (input) {
+        if (!editorTextarea.value.includes(input)) {
+            openModal(nothingFoundModal)
+            return
+        }
         // Get the file content
         let fileContent = editorTextarea.value;
         // Replace all the input text with the replace text
