@@ -70,16 +70,6 @@ minimizeButton.addEventListener('click', () => {
     ipcRenderer.send('message', 'minimize')
 })
 
-maximizeButton.addEventListener('click', () => {
-    if (maximized) {
-        ipcRenderer.send('message', 'unmaximize')
-        maximized = false
-    } else {
-        ipcRenderer.send('message', 'maximize')
-        maximized = true
-    }
-})
-
 // Initialize the action history and redo stack
 let lastSession = {}
 
@@ -87,12 +77,45 @@ let preferences = {
     theme: 'light',
     font: 'Courier New',
     fontSize: 16,
-    statusBar: true
+    statusBar: true,
+    windowDimensions: {
+        width: 800,
+        height: 600,
+        fullScreen: false,
+        maximized: false
+    }
 }
+
+function toggleFullScreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen()
+      preferences.windowDimensions.fullScreen = false
+      savePreferences()
+    } else {
+      document.documentElement.requestFullscreen()
+      preferences.windowDimensions.fullScreen = true
+      savePreferences()
+    }
+  }
+
 
 function savePreferences() {
     fs.writeFileSync('preferences.json', JSON.stringify(preferences))
 }
+
+maximizeButton.addEventListener('click', () => {
+    if (maximized) {
+        ipcRenderer.send('message', 'unmaximize')
+        maximized = false
+        preferences.windowDimensions.maximized = false
+        savePreferences()
+    } else {
+        ipcRenderer.send('message', 'maximize')
+        maximized = true
+        preferences.windowDimensions.maximized = true
+        savePreferences()
+    }
+})
 
 // Variables to store the current state
 let currentFilePath = null // The path of the current file
@@ -104,6 +127,7 @@ let currentStatusBar = true // The current status bar visibility
 let currentSearchIndex = -1 // The current index of the search result
 let currentSearchResults = [] // The current array of the search results
 let isChangesSaved = true;
+let currentDimensions = {width: 800, height: 600, fullScreen: false}
 
 function loadPreferences() {
     try {
@@ -115,6 +139,16 @@ function loadPreferences() {
         currentFontSize = preferences.fontSize
         fontSelect.value = currentFont
         fontSizeInput.value = currentFontSize
+        // Send the dimensions to the main process
+        currentDimensions = preferences.windowDimensions
+        ipcRenderer.send('window-dimensions', currentDimensions)
+        if (preferences.windowDimensions.fullScreen) {
+            toggleFullScreen()
+        }
+        if (preferences.windowDimensions.maximized) {
+            ipcRenderer.send('message', 'maximize')
+            maximized = true
+        }
         applyFont()
         if (!preferences.statusBar) {
             toggleStatusBar()
@@ -972,4 +1006,17 @@ previewMDorHTML.addEventListener('click', () => {
 
 toggleFullScreenButton.addEventListener('click', () => {
     toggleFullScreen()
+})
+
+// When the window is resized, send the new dimensions to the main process
+window.addEventListener('resize', () => {
+    preferences.windowDimensions = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        fullScreen: preferences.windowDimensions.fullScreen,
+        maximized: preferences.windowDimensions.maximized
+    }
+
+    currentDimensions = preferences.windowDimensions
+    savePreferences()
 })

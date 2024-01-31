@@ -46,6 +46,11 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null
     })
+
+    // is JSON, like this {"width": 800, "height": 600}
+    ipcMain.on('window-dimensions', (event, dimensions) => {
+        mainWindow.setSize(dimensions.width, dimensions.height)
+    })
 }
 
 // This method will be called when Electron has finished
