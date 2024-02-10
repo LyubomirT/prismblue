@@ -62,6 +62,10 @@ const nothingFoundModal = document.getElementById('nothing-found')
 const extRestriction = document.getElementById('ext-restriction')
 const toggleExtRestriction = document.getElementById('ext-rest-button')
 const setRunCommandBtn = document.getElementById('set-run-command-button')
+const clearPrefsBtn = document.getElementById('clear-prefs-button')
+const confirmClearPrefsModal = document.getElementById('confirm-clear-prefs-modal')
+const confirmClearPrefsModalYes = document.getElementById('yes-clear-prefs-button')
+const confirmClearPrefsModalNo = document.getElementById('no-clear-prefs-button')
 
 
 let maximized = false
@@ -475,6 +479,33 @@ nothingFoundModal.addEventListener('mouseup', (event) => {
     }
 );
 
+confirmClearPrefsModal.addEventListener('mousedown', (event) => {
+    if (event.target.classList.contains('modal')) {
+        // Record the initial position of the click
+        confirmClearPrefsModal.initialClickX = event.clientX;
+        confirmClearPrefsModal.initialClickY = event.clientY;
+    }
+});
+
+confirmClearPrefsModal.addEventListener('mouseup', (event) => {
+    if (
+        event.target.classList.contains('modal') &&
+        confirmClearPrefsModal.initialClickX === event.clientX &&
+        confirmClearPrefsModal.initialClickY === event.clientY
+    ) {
+        closeModal(confirmClearPrefsModal);
+    }
+});
+
+confirmClearPrefsModalYes.addEventListener('click', () => {
+    ipcRenderer.send('clear-preferences')
+    closeModal(confirmClearPrefsModal)
+})
+
+confirmClearPrefsModalNo.addEventListener('click', () => {
+    closeModal(confirmClearPrefsModal)
+})
+
 
 // Add event listeners to the modal buttons
 findModal.querySelector('.close-button').addEventListener('click', () => {
@@ -556,6 +587,10 @@ nothingFoundModal.querySelector('.close-button').addEventListener('click', () =>
 
 nothingFoundModal.querySelector('#ok-nothing-found-button').addEventListener('click', () => {
     closeModal(nothingFoundModal)
+})
+
+confirmClearPrefsModal.querySelector('.close-button').addEventListener('click', () => {
+    closeModal(confirmClearPrefsModal)
 })
 
 // Handle the file-opened event from the main process
@@ -1059,4 +1094,9 @@ window.addEventListener('resize', () => {
 
     currentDimensions = preferences.windowDimensions
     savePreferences()
+})
+
+clearPrefsBtn.addEventListener('click', () => {
+    // ipcRenderer.send('message', 'clear-preferences')
+    openModal(confirmClearPrefsModal)
 })
