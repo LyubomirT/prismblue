@@ -59,6 +59,7 @@ const unsupportedLanguage = document.getElementById('unsupported-language')
 const previewMDorHTML = document.getElementById('preview-button')
 const toggleFullScreenButton = document.getElementById('toggle-fullscreen-button')
 const nothingFoundModal = document.getElementById('nothing-found')
+const extRestriction = document.getElementById('ext-restriction')
 
 let maximized = false
 
@@ -83,7 +84,9 @@ let preferences = {
         height: 600,
         fullScreen: false,
         maximized: false
-    }
+    },
+    extRestrictionOn: true,
+    runCommand: 'python '
 }
 
 function toggleFullScreen() {
@@ -126,8 +129,10 @@ let currentFontSize = 16 // The current font size
 let currentStatusBar = true // The current status bar visibility
 let currentSearchIndex = -1 // The current index of the search result
 let currentSearchResults = [] // The current array of the search results
-let isChangesSaved = true;
+let isChangesSaved = true
 let currentDimensions = {width: 800, height: 600, fullScreen: false}
+let extRestrictionOn = true
+let runCommand = 'python '
 
 function loadPreferences() {
     try {
