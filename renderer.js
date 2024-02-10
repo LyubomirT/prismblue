@@ -1137,6 +1137,32 @@ previewMDorHTML.addEventListener('click', () => {
     }
 })
 
+previewmdButton.addEventListener('click', () => {
+    if (currentFilePath === null) {
+        openModal(unsavedFile)
+        return
+    }
+    if (changes.textContent === 'Unsaved Changes') {
+        openModal(unsavedFile)
+        return
+    }
+    // Ignore file extension
+    ipcRenderer.send('previewinwindow', applyMDTemplate(editorTextarea.value))
+})
+
+previewhtmlButton.addEventListener('click', () => {
+    if (currentFilePath === null) {
+        openModal(unsavedFile)
+        return
+    }
+    if (changes.textContent === 'Unsaved Changes') {
+        openModal(unsavedFile)
+        return
+    }
+    // Ignore file extension
+    ipcRenderer.send('previewinwindow', applyHTMLTemplate(editorTextarea.value))
+})
+
 toggleFullScreenButton.addEventListener('click', () => {
     toggleFullScreen()
 })
