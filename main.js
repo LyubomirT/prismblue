@@ -121,6 +121,9 @@ ipcMain.on('message', (event, arg) => {
                 let command = arg.split('|||')[1]
                 command = "ruby " + command
                 openPowerShellAndRunCommand(command)
+            } else if (arg.includes('run-java|||')) {
+                let command = arg.split('|||')[1]
+                command = "javac " + command + " && java " + command.split('.')[0]
             } else {
                 console.log('Unknown message: ' + arg)
             }
