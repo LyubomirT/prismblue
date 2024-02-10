@@ -138,6 +138,8 @@ The status bar below (which is hide-able, by the way) contains some information 
 
 If you have your code written in a supported language (Python, Node.js, Java, or Ruby), you can run it directly from Prismblue. To do that, click on the "Run" button in the menu and then click on the "Run Code" button in the submenu. Note that your file must be saved before you can run it.
 
+Although, you can always use the `Ignore Extensions` feature to run any file you want by writing your own run command. See the "Ignore Extensions" section for more information.
+
 ### Previewing Markdown and HTML Files
 
 Additionally, you can preview your Markdown and HTML files in Prismblue. To do that, click on the "Run" button in the menu and then click on the "Preview Markdown/HTML" button in the submenu. After that a new mini-Prismblue window will open and you will be able to see your Markdown or HTML file rendered in it.
@@ -147,6 +149,38 @@ Additionally, you can preview your Markdown and HTML files in Prismblue. To do t
 
 >[!NOTE]
 > The HTML Previewer runs on the Electron backend, so it uses the same renderer as Chromium. This means that it will render your HTML file the same way as Chromium would.
+
+### Ignore Extensions
+
+If you want to run a file that Prismblue doesn't support, you can use the "Ignore Extensions" feature. In the `Run` menu there is a button called "Toggle ResExt". Clicking on it will toggle Extension Restrictions. When the feature is enabled, file extensions will be checked before attempting to run the code, and the file will use the default run command for the extension. When the feature is disabled, file extensions will be ignored and the file will use the custom run command you can set in the `Set Run Command` button.
+
+### Set Run Command
+
+If you want to run a file with a custom command, you can use the "Set Run Command" feature. In the `Run` menu there is a button called "Set Run Command", which appears only when the "Extension Restrictions" feature is disabled. Clicking on it will open a modal where you can set the run command for the file you're working on. The run command will be saved and will be used every time you run the file. To allow you to customize the run command even more, Prismblue supports the following placeholders:
+
+- `{filename}` - The name of the file you're working on
+- `{filename-no-ext}` - The name of the file you're working on without the extension
+
+Soon enough, Prismblue will support more placeholders, such as `{filedir}` and `{fileext}`.
+
+### Ignore Extension for MD/HTML
+
+When "Extension Restrictions" is disabled, the `Preview MD/HTML` button will be split into two buttons - `Preview MD` and `Preview HTML`. Clicking on the `Preview MD` button will open the Markdown Previewer and clicking on the `Preview HTML` button will open the HTML Previewer. The point here is that you can preview any file you want, not just Markdown and HTML files. (Useful when you have Markdown/HTML content in a file with a different extension.)
+
+### Reset Preferences
+
+If you want to reset your preferences, you can use the "Reset Preferences" feature. In the `Edit` menu there is a button called "Reset Preferences". Clicking on it will reset all your preferences to their default values.
+
+<!-- Warning -->
+
+> [!WARNING]
+> **This action is irreversible!** Once you reset your preferences, you won't be able to restore them. The window will close and Prismblue will restart.
+
+> [!CAUTION]
+> **This action will close Prismblue!** If you have unsaved changes, they will be lost. Make sure to save your changes before resetting your preferences.
+
+> [!TIP]
+> If you want to reset your preferences, but you don't want to lose them, you can back them up by copying the `preferences.json` file from the `prismblue` directory to a safe place.
 
 ## Acknowledgements
 
