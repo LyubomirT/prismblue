@@ -61,6 +61,7 @@ const toggleFullScreenButton = document.getElementById('toggle-fullscreen-button
 const nothingFoundModal = document.getElementById('nothing-found')
 const extRestriction = document.getElementById('ext-restriction')
 const toggleExtRestriction = document.getElementById('ext-rest-button')
+const setRunCommandBtn = document.getElementById('set-run-command-button')
 
 
 let maximized = false
@@ -135,6 +136,23 @@ let isChangesSaved = true
 let currentDimensions = {width: 800, height: 600, fullScreen: false}
 let extRestrictionOn = true
 let runCommand = 'python '
+hide(setRunCommandBtn)
+
+toggleExtRestriction.addEventListener('click', () => {
+    if (extRestrictionOn) {
+        extRestrictionOn = false
+        toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (Off)'
+        extRestriction.innerHTML = 'Custom Run Command'
+        show(setRunCommandBtn)
+    } else {
+        extRestrictionOn = true
+        toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (On)'
+        extRestriction.innerHTML = 'Restricted By Extension'
+        hide(setRunCommandBtn)
+    }
+    preferences.extRestrictionOn = extRestrictionOn
+    savePreferences()
+})
 
 function loadPreferences() {
     try {
@@ -161,6 +179,10 @@ function loadPreferences() {
             toggleStatusBar()
         }
         extRestrictionOn = preferences.extRestrictionOn
+        var tempvariable = !extRestrictionOn
+        extRestrictionOn = tempvariable
+        // SMASH DA BUTTON!
+        toggleExtRestriction.click()
         runCommand = preferences.runCommand
     } catch (err) {
         console.log(err)
@@ -685,6 +707,10 @@ function hide(element) {
     element.classList.add('hidden')
 }
 
+function show(element) {
+    element.classList.remove('hidden')
+}
+
 // Apply the font settings
 function applyFont() {
     let font = fontSelect.value
@@ -1032,19 +1058,5 @@ window.addEventListener('resize', () => {
     }
 
     currentDimensions = preferences.windowDimensions
-    savePreferences()
-})
-
-toggleExtRestriction.addEventListener('click', () => {
-    if (extRestrictionOn) {
-        extRestrictionOn = false
-        toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (Off)'
-        extRestriction.innerHTML = 'Custom Run Command'
-    } else {
-        extRestrictionOn = true
-        toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (On)'
-        extRestriction.innerHTML = 'Restricted By Extension'
-    }
-    preferences.extRestrictionOn = extRestrictionOn
     savePreferences()
 })
