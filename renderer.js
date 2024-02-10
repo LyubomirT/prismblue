@@ -1145,3 +1145,7 @@ clearPrefsBtn.addEventListener('click', () => {
     // ipcRenderer.send('message', 'clear-preferences')
     openModal(confirmClearPrefsModal)
 })
+
+setRunCommandBtn.addEventListener('click', () => {
+    openModal(setRunCommandModal)
+})
