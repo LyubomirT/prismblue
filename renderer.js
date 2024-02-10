@@ -961,14 +961,10 @@ undoButton.addEventListener('click', undo)
 redoButton.addEventListener('click', redo)
 
 runButton.addEventListener('click', () => {
-        // For now we only support python, node, and ruby
+        // For now we only support python, node, java, and ruby
         // Check if the file is saved
         if (currentFilePath === null) {
             openModal(unsavedFile)
-            return
-        }
-        if (currentFilePath.split('.').pop() !== 'py' && currentFilePath.split('.').pop() !== 'js' && currentFilePath.split('.').pop() !== 'rb') {
-            openModal(unsupportedLanguage)
             return
         }
         if (changes.textContent === 'Unsaved Changes') {
@@ -981,6 +977,11 @@ runButton.addEventListener('click', () => {
             ipcRenderer.send('message', 'run-node|||' + currentFilePath)
         } else if (currentFilePath.split('.').pop() === 'rb') {
             ipcRenderer.send('message', 'run-ruby|||' + currentFilePath)
+        } else if (currentFilePath.split('.').pop() === 'java') {
+            ipcRenderer.send('message', 'run-java|||' + currentFilePath)
+        } else {
+            openModal(unsupportedLanguage)
+            return
         }
     }
 );
