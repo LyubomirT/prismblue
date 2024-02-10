@@ -38,6 +38,7 @@
       <div class="sub-button" id="cut-button"><i class="fas fa-cut"></i> Cut</div>
       <div class="sub-button" id="select-all-button"><i class="fas fa-check-double"></i> Select All</div>
       <div class="sub-button" id="find-button"><i class="fas fa-search"></i> Find</div>
+      <div class="sub-button" id="clear-prefs-button"><i class="fas fa-cogs"></i> Clear Preferences</div>
     </div>
     <div id="view-panel" class="sub-panel">
       <div class="sub-button" id="toggle-theme-button"><i class="fas fa-adjust"></i> Toggle Theme</div>
@@ -155,6 +156,15 @@
       <p>Enter the command to run the code. For example, for Python, you can enter "python3 " or "python ".</p>
       <input type="text" id="run-command-input" placeholder="Enter the command...">
       <button id="set-run-command-button">Set</button>
+    </div>
+  </div>
+  <div id="confirm-clear-prefs-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">×</span>
+      <h3>Confirm Clear Preferences</h3>
+      <p>THIS ACTION IS IRREVERSIBLE AND WILL DELETE ALL YOUR PREFERENCES. THE APP WILL ALSO BE RELOADED. ARE YOU SURE YOU WANT TO DO THIS?</p>
+      <button id="yes-clear-prefs-button">Yes</button>
+      <button id="no-clear-prefs-button">No</button>
     </div>
   </div>
   <!-- Here we come... -->
