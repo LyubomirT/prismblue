@@ -36,7 +36,7 @@ function createWindow() {
 
     // Comment out this area to enable DevTools
     /////////////DEVTOOLS//////////////////////
-    mainWindow.setMenu(null)
+    //mainWindow.setMenu(null)
     ///////////////////////////////////////////
 
     // Emitted when the window is closed.

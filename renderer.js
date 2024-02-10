@@ -60,6 +60,8 @@ const previewMDorHTML = document.getElementById('preview-button')
 const toggleFullScreenButton = document.getElementById('toggle-fullscreen-button')
 const nothingFoundModal = document.getElementById('nothing-found')
 const extRestriction = document.getElementById('ext-restriction')
+const toggleExtRestriction = document.getElementById('ext-rest-button')
+
 
 let maximized = false
 
@@ -158,6 +160,8 @@ function loadPreferences() {
         if (!preferences.statusBar) {
             toggleStatusBar()
         }
+        extRestrictionOn = preferences.extRestrictionOn
+        runCommand = preferences.runCommand
     } catch (err) {
         console.log(err)
     }
@@ -677,6 +681,10 @@ function toggleStatusBar() {
     savePreferences()
 }
 
+function hide(element) {
+    element.classList.add('hidden')
+}
+
 // Apply the font settings
 function applyFont() {
     let font = fontSelect.value
@@ -1024,5 +1032,19 @@ window.addEventListener('resize', () => {
     }
 
     currentDimensions = preferences.windowDimensions
+    savePreferences()
+})
+
+toggleExtRestriction.addEventListener('click', () => {
+    if (extRestrictionOn) {
+        extRestrictionOn = false
+        toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (Off)'
+        extRestriction.innerHTML = 'Custom Run Command'
+    } else {
+        extRestrictionOn = true
+        toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (On)'
+        extRestriction.innerHTML = 'Restricted By Extension'
+    }
+    preferences.extRestrictionOn = extRestrictionOn
     savePreferences()
 })
