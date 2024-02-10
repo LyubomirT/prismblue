@@ -9,6 +9,11 @@ const {platform} = require('os')
 let mainWindow
 let isChangesSaved = true; // Default to true when the app starts
 
+function forceRelaunch() {
+    app.relaunch()
+    app.quit()
+}
+
 
 function createWindow() {
     // Create the browser window.
@@ -259,7 +264,7 @@ function openPowerShellAndRunCommand(command) {
         return;
     }
 
-    const powershellProcess = exec(powershellCommand);
+    const powershellProcess = exec(command, (err, stdout, stderr) => {});
 
     powershellProcess.stdout.on('data', (data) => {
         console.log(data.toString());
@@ -384,7 +389,5 @@ ipcMain.on('clear-preferences', (event) => {
             console.log('Deleted preferences.json')
         }
     })
-    // Relaunch the app
-    app.relaunch()
-    app.quit()
+    forceRelaunch()
 })
