@@ -136,7 +136,7 @@ The status bar below (which is hide-able, by the way) contains some information 
 
 ### Running Your Code
 
-If you have your code written in a supported language (Python, Node.js, or Ruby), you can run it directly from Prismblue. To do that, click on the "Run" button in the menu and then click on the "Run Code" button in the submenu. Note that your file must be saved before you can run it.
+If you have your code written in a supported language (Python, Node.js, Java, or Ruby), you can run it directly from Prismblue. To do that, click on the "Run" button in the menu and then click on the "Run Code" button in the submenu. Note that your file must be saved before you can run it.
 
 ### Previewing Markdown and HTML Files
 
