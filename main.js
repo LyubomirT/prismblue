@@ -373,3 +373,18 @@ async function tempWindow(htmlstring) {
 ipcMain.on('previewinwindow', async (event, htmlstring) => {
     tempWindow(htmlstring)
 })
+
+
+ipcMain.on('clear-preferences', (event) => {
+    // Delete preferences.json from the local directory
+    fs.unlink('preferences.json', (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log('Deleted preferences.json')
+        }
+    })
+    // Relaunch the app
+    app.relaunch()
+    app.quit()
+})
