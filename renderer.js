@@ -69,6 +69,8 @@ const confirmClearPrefsModalNo = document.getElementById('no-clear-prefs-button'
 const runCommandInput = document.getElementById('run-command-input')
 const setRunCommandModal = document.getElementById('set-run-command-modal')
 const setRunCommandModalBtn = document.getElementById('set-run-command-button-nointerference')
+const previewmdButton = document.getElementById('preview-md-button')
+const previewhtmlButton = document.getElementById('preview-html-button')
 
 
 let maximized = false
@@ -151,11 +153,17 @@ toggleExtRestriction.addEventListener('click', () => {
         toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (Off)'
         extRestriction.innerHTML = 'Custom Run Command'
         show(setRunCommandBtn)
+        show(previewhtmlButton)
+        show(previewmdButton)
+        hide(previewMDorHTML)
     } else {
         extRestrictionOn = true
         toggleExtRestriction.innerHTML = '<i class="fas fa-ban"></i> Toggle ExtRes (On)'
         extRestriction.innerHTML = 'Restricted By Extension'
         hide(setRunCommandBtn)
+        hide(previewhtmlButton)
+        hide(previewmdButton)
+        show(previewMDorHTML)
     }
     preferences.extRestrictionOn = extRestrictionOn
     savePreferences()
