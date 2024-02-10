@@ -66,6 +66,9 @@ const clearPrefsBtn = document.getElementById('clear-prefs-button')
 const confirmClearPrefsModal = document.getElementById('confirm-clear-prefs-modal')
 const confirmClearPrefsModalYes = document.getElementById('yes-clear-prefs-button')
 const confirmClearPrefsModalNo = document.getElementById('no-clear-prefs-button')
+const runCommandInput = document.getElementById('run-command-input')
+const setRunCommandModal = document.getElementById('set-run-command-modal')
+const setRunCommandModalBtn = document.getElementById('set-run-command-button')
 
 
 let maximized = false
@@ -159,7 +162,6 @@ toggleExtRestriction.addEventListener('click', () => {
 })
 
 function loadPreferences() {
-    try {
         preferences = JSON.parse(fs.readFileSync('preferences.json', 'utf8'))
         if (preferences.theme === 'dark') {
             toggleTheme()
@@ -188,12 +190,20 @@ function loadPreferences() {
         // SMASH DA BUTTON!
         toggleExtRestriction.click()
         runCommand = preferences.runCommand
-    } catch (err) {
-        console.log(err)
-    }
+        runCommandInput.value = runCommand
 }
 
-loadPreferences()
+setRunCommandBtn.addEventListener('click', () => {
+    openModal(setRunCommandModal)
+})
+
+try {
+    loadPreferences()
+} catch (err) {
+    // Save the default preferences
+    savePreferences()
+    loadPreferences()
+}
 
 // Add event listeners to the menu buttons
 fileButton.addEventListener('click', () => {
@@ -497,6 +507,32 @@ confirmClearPrefsModal.addEventListener('mouseup', (event) => {
     }
 });
 
+setRunCommandModal.addEventListener('mousedown', (event) => {
+    if (event.target.classList.contains('modal')) {
+        // Record the initial position of the click
+        setRunCommandModal.initialClickX = event.clientX;
+        setRunCommandModal.initialClickY = event.clientY;
+    }
+});
+
+setRunCommandModal.addEventListener('mouseup', (event) => {
+    if (
+        event.target.classList.contains('modal') &&
+        setRunCommandModal.initialClickX === event.clientX &&
+        setRunCommandModal.initialClickY === event.clientY
+    ) {
+        closeModal(setRunCommandModal);
+    }
+});
+
+setRunCommandModalBtn.addEventListener('click', () => {
+    runCommand = runCommandInput.value
+    preferences.runCommand = runCommand
+    savePreferences()
+    closeModal(setRunCommandModal)
+})
+
+
 confirmClearPrefsModalYes.addEventListener('click', () => {
     ipcRenderer.send('clear-preferences')
     closeModal(confirmClearPrefsModal)
@@ -591,6 +627,10 @@ nothingFoundModal.querySelector('#ok-nothing-found-button').addEventListener('cl
 
 confirmClearPrefsModal.querySelector('.close-button').addEventListener('click', () => {
     closeModal(confirmClearPrefsModal)
+})
+
+setRunCommandModal.querySelector('.close-button').addEventListener('click', () => {
+    closeModal(setRunCommandModal)
 })
 
 // Handle the file-opened event from the main process
@@ -1045,17 +1085,22 @@ runButton.addEventListener('click', () => {
             openModal(unsavedFile)
             return
         }
-        if (currentFilePath.split('.').pop() === 'py') {
-            ipcRenderer.send('message', 'run-py|||' + currentFilePath)
-        } else if (currentFilePath.split('.').pop() === 'js') {
-            ipcRenderer.send('message', 'run-node|||' + currentFilePath)
-        } else if (currentFilePath.split('.').pop() === 'rb') {
-            ipcRenderer.send('message', 'run-ruby|||' + currentFilePath)
-        } else if (currentFilePath.split('.').pop() === 'java') {
-            ipcRenderer.send('message', 'run-java|||' + currentFilePath)
-        } else {
-            openModal(unsupportedLanguage)
-            return
+        if (extRestrictionOn) {
+            if (currentFilePath.split('.').pop() === 'py') {
+                ipcRenderer.send('message', 'run-py|||' + currentFilePath)
+            } else if (currentFilePath.split('.').pop() === 'js') {
+                ipcRenderer.send('message', 'run-node|||' + currentFilePath)
+            } else if (currentFilePath.split('.').pop() === 'rb') {
+                ipcRenderer.send('message', 'run-ruby|||' + currentFilePath)
+            } else if (currentFilePath.split('.').pop() === 'java') {
+                ipcRenderer.send('message', 'run-java|||' + currentFilePath)
+            } else {
+                openModal(unsupportedLanguage)
+                return
+            }
+        }
+        else {
+            ipcRenderer.send('message', 'run-custom|||' + runCommand + currentFilePath)
         }
     }
 );
