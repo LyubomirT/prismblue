@@ -68,7 +68,7 @@ const confirmClearPrefsModalYes = document.getElementById('yes-clear-prefs-butto
 const confirmClearPrefsModalNo = document.getElementById('no-clear-prefs-button')
 const runCommandInput = document.getElementById('run-command-input')
 const setRunCommandModal = document.getElementById('set-run-command-modal')
-const setRunCommandModalBtn = document.getElementById('set-run-command-button')
+const setRunCommandModalBtn = document.getElementById('set-run-command-button-nointerference')
 
 
 let maximized = false
@@ -1100,7 +1100,12 @@ runButton.addEventListener('click', () => {
             }
         }
         else {
-            ipcRenderer.send('message', 'run-custom|||' + runCommand + currentFilePath)
+            // Replace {filename} with the current file path
+            // Replace {filename-no-ext} with the current file path without the extension
+            stringweneed = runCommand
+            stringweneed = stringweneed.replace(/{filename}/g, currentFilePath)
+            stringweneed = stringweneed.replace(/{filename-no-ext}/g, currentFilePath.split('.')[0])
+            ipcRenderer.send('message', 'run-custom|||' + stringweneed)
         }
     }
 );
