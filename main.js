@@ -367,6 +367,17 @@ async function tempWindow(htmlstring) {
     // });
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
+    // If temp.html exists, delete it
+    if (fs.existsSync('temp.html')) {
+        fs.unlink('temp.html', (err) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Deleted temp.html')
+            }
+        })
+    }
+
     // Save the htmlstring to a temp file
     fs.writeFileSync('temp.html', htmlstring)
 
